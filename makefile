@@ -18,7 +18,8 @@ CC_FLAGS=-c         \
          -W         \
          -Wall      \
          -ansi      \
-         -pedantic
+         -pedantic  \
+				 -lncurses
  
 # Command used at clean target
 RM = rm -rf
@@ -30,7 +31,7 @@ all: objFolder $(PROJ_NAME)
  
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GCC linker: $@'
-	$(CC) $^ -o $@
+	$(CC) $^ -lncurses -o $@
 	@ echo 'Finished building binary: $@'
 	@ echo ' '
  
