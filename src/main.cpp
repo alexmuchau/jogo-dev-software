@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include "lib.h"
+#include "player.h"
+
+#include <ctime>
+#include <string>
+
 
 int pos[2] = {10, -10};
 int axis[2] = {0, 0};
@@ -33,15 +38,37 @@ void update(){
 
 int main(int argc, char const *argv[])
 {
-    initscr();
-    nodelay(stdscr, true);
-    timeout(0);
+    // initscr();
+    // nodelay(stdscr, true);
+    // timeout(0);
 
-    do{
-        update();
-        napms(20);
-    } while (getch() != 'q');
+    // do{
+    //     update();
+    //     napms(20);
+    // } while (getch() != 'q');
     
+    // endwin();
+
+    // return 0;
+
+    initscr();
+    noecho();
+    cbreak();
+
+    int yMax, xMax;
+    getmaxyx(stdscr, yMax, xMax);
+
+    WINDOW * playwin = newwin(20, 50, (yMax/2) - 10, 10);
+    box(playwin, 0, 0);
+    refresh();
+    wrefresh(playwin);
+
+    Player * p = new Player(playwin, 1, 1, '@');
+    do {
+        p->display();
+        wrefresh(playwin);
+    } while(p->getmv() != 'x');
+
     endwin();
 
     return 0;
