@@ -6,14 +6,21 @@ using namespace std;
 
 int main()
 {
+    // inicializando ncurses
     initscr();
     noecho();
     cbreak();
+    curs_set(0);
+
+    // inicializando cores
+    start_color();
+    use_default_colors();
 
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
+    double game_screen_max = (yMax <= xMax ? yMax : xMax)/2;
 
-    GameMap game_map(yMax/2, xMax/2, yMax/8, xMax/4);
+    GameMap game_map(game_screen_max, yMax/4, xMax/4);
 
     box(game_map.get_win(), 0, 0);
     refresh();

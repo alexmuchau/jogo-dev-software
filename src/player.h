@@ -1,3 +1,5 @@
+#ifndef player
+
 #include "lib.h"
 
 class Player {
@@ -12,5 +14,7 @@ class Player {
   private:
     int xLoc, yLoc, xMax, yMax;
     char character;
-    WINDOW * gamewin;
+    WINDOW * game_win;
 };
+
+#endif
