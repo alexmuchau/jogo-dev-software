@@ -19,7 +19,7 @@ CC_FLAGS=-c         \
          -Wall      \
          -ansi      \
          -pedantic  \
-				 -lncurses
+				 -lncurses	\
  
 # Command used at clean target
 RM = rm -rf
@@ -31,18 +31,18 @@ all: objFolder $(PROJ_NAME)
  
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GCC linker: $@'
-	$(CC) $^ -lncurses -o $@
+	$(CC) $^ -lncurses -o $@ -std=c++20
 	@ echo 'Finished building binary: $@'
 	@ echo ' '
  
 ./objects/%.o: ./src/%.cpp ./src/%.h
 	@ echo 'Building target using GCC compiler: $<'
-	$(CC) $< $(CC_FLAGS) -o $@
+	$(CC) $< $(CC_FLAGS) -o $@ -std=c++20
 	@ echo ' '
  
 ./objects/main.o: ./src/main.cpp $(H_SOURCE)
 	@ echo 'Building target using GCC compiler: $<'
-	$(CC) $< $(CC_FLAGS) -o $@
+	$(CC) $< $(CC_FLAGS) -o $@ -std=c++20
 	@ echo ' '
  
 objFolder:

@@ -1,72 +1,35 @@
-#include <cstdlib>
-#include <iostream>
-#include <unistd.h>
-#include <ncurses.h>
 #include "lib.h"
 #include "player.h"
+#include "game_map.h"
 
-#include <ctime>
-#include <string>
+using namespace std;
 
-
-int pos[2] = {10, -10};
-int axis[2] = {0, 0};
-
-void getAxis(int (&axis)[2], int const &input){
-    axis[0] = 0;
-    axis[1] = 0;
-    if (input != ERR){
-        axis[0] = (input == 'd') - (input == 'a');
-        axis[1] = (input == 'w') - (input == 's');
-    }
-}
-
-void update(){
-    int input = getch();
-    getAxis(axis, input);
-    
-    pos[0] += axis[0] * 600 / COLS;
-    pos[1] += axis[1] * 100 / LINES;
-
-    erase();
-    printw("pos: (%d, %d) axis: (%d, %d)", pos[0], pos[1], axis[0], axis[1]);
-    mvprintw(-pos[1], pos[0], "88");
-    mvprintw(-pos[1] - 1, pos[0], "88");
-    mvprintw(-pos[1] - 2, pos[0], "88");
-    refresh();
-}
-
-int main(int argc, char const *argv[])
+int main()
 {
-    // initscr();
-    // nodelay(stdscr, true);
-    // timeout(0);
-
-    // do{
-    //     update();
-    //     napms(20);
-    // } while (getch() != 'q');
-    
-    // endwin();
-
-    // return 0;
-
+    // inicializando ncurses
     initscr();
     noecho();
     cbreak();
+    curs_set(0);
+
+    // inicializando cores
+    start_color();
+    use_default_colors();
 
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
+    double game_screen_max = (yMax <= xMax ? yMax : xMax)/2;
 
-    WINDOW * playwin = newwin(20, 50, (yMax/2) - 10, 10);
-    box(playwin, 0, 0);
+    GameMap game_map(game_screen_max, yMax/4, xMax/4);
+
+    box(game_map.get_win(), 0, 0);
     refresh();
-    wrefresh(playwin);
+    wrefresh(game_map.get_win());
 
-    Player * p = new Player(playwin, 1, 1, '@');
+    Player * p = new Player(game_map.get_win(), 1, 1, '@');
     do {
         p->display();
-        wrefresh(playwin);
+        wrefresh(game_map.get_win());
     } while(p->getmv() != 'x');
 
     endwin();
