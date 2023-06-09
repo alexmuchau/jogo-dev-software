@@ -58,6 +58,6 @@ int Player::getmv() {
 }
 
 void Player::display(){
+  bomb->display(game_win);
   mvwaddch(game_win, yLoc, xLoc, character);
-  bomb->display(game_win, yLoc, xLoc);
 }

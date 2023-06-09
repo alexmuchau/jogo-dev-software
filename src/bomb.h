@@ -2,11 +2,13 @@
 #define H_BOMB
 
 #include <ncurses.h>
+#include <chrono>
 
 class Bomb {
     int range;
-    int max_cooldown;
-    float cooldown;
+    int cooldown;
+    std::chrono::time_point<std::chrono::system_clock> last_cast;
+    bool active;
     int vCast_yPos;
     int vCast_xPos;
     int hCast_yPos;
@@ -14,8 +16,8 @@ class Bomb {
 
     public:
         void cast(int yLoc, int xLoc);
-        void display(WINDOW * curwin, int yLoc, int xLoc);
-        Bomb(int range, int max_cooldown);
+        void display(WINDOW * curwin);
+        Bomb(int range, int cooldown);
 };
 
 #endif
