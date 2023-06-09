@@ -1,2 +1,2 @@
-g++ ./src/main.cpp -lncurses -o bomberman
+g++ ./src/*.cpp -lncurses -o bomberman
 ./bomberman

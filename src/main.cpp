@@ -66,6 +66,7 @@ int main()
 
     Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
     do {
+        usleep(10000);
         p->display();
         wrefresh(game_map.get_win());
     } while(p->getmv() != 'x');

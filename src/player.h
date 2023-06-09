@@ -1,6 +1,9 @@
-#ifndef player
+#ifndef H_PLAYER
+#define H_PLAYER
 
 #include "lib.h"
+
+class Bomb;
 
 class Player {
   public:
@@ -16,6 +19,7 @@ class Player {
     char character;
     string name;
     WINDOW * game_win;
+    Bomb * bomb;
 };
 
 #endif
