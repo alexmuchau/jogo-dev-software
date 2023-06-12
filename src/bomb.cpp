@@ -7,6 +7,7 @@ Bomb::Bomb(int range, int cooldown){
     this->range = range;
     this->cooldown = cooldown;
     cooldown = (float) cooldown;
+    last_cast = 0;
 }
 
 void Bomb::cast(int yLoc, int xLoc){
