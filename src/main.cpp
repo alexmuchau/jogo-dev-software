@@ -1,11 +1,18 @@
 #include "lib.h"
 #include "player.h"
 #include "game_map.h"
-
-using namespace std;
+#include "utilities.h"
 
 int main()
 {
+    Utilities tools = Utilities();
+
+    cout << tools.screen_cols << " " << tools.screen_rows << endl;
+
+    if(tools.screen_verification() == false) {
+        exit(0);
+    }
+
     // inicializando ncurses
     initscr();
     noecho();
@@ -16,20 +23,10 @@ int main()
     start_color();
     use_default_colors();
 
-    int yMax, xMax;
-    getmaxyx(stdscr, yMax, xMax);
-    int game_screen_max = (yMax <= xMax ? yMax : xMax)*3/4;
-    double start_y = yMax/8;
-    double start_x = 0;
+    double start_y = 0, start_x = 0;
+    tools.get_map_startxy(&start_y, &start_x);
 
-    // for (size_t i = 0; i < count; i++)
-    // {
-    //     /* code */
-    // }
-    
-    
-
-    GameMap game_map(game_screen_max, start_y, start_x);
+    GameMap game_map(tools.min_screen_rows - 10, start_y, start_x);
 
     box(game_map.get_win(), 0, 0);
     refresh();
