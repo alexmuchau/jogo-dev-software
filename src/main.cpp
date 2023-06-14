@@ -18,9 +18,18 @@ int main()
 
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
-    double game_screen_max = (yMax <= xMax ? yMax : xMax)/2;
+    int game_screen_max = (yMax <= xMax ? yMax : xMax)*3/4;
+    double start_y = yMax/8;
+    double start_x = 0;
 
-    GameMap game_map(game_screen_max, yMax/4, xMax/4);
+    // for (size_t i = 0; i < count; i++)
+    // {
+    //     /* code */
+    // }
+    
+    
+
+    GameMap game_map(game_screen_max, start_y, start_x);
 
     box(game_map.get_win(), 0, 0);
     refresh();
