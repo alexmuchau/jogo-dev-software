@@ -1,5 +1,6 @@
 #include "lib.h"
 #include "player.h"
+#include "enemy.h"
 #include "game_map.h"
 #include "utilities.h"
 #include "status_bar.h"
@@ -80,7 +81,20 @@ int main()
 
     // p.overview();
 
+   Enemy * ptr = new Enemy(playwin, 4, 4, '7');
+
+    while(true) {
+
+        ptr->move();
+        ptr->draw();
+
+        refresh();                  //Cancelado quando o inimigo morrer e é chamado o destrutor dele
+
+        napms(100);
+    } 
+
     endwin();
+
 
     return 0;
 }

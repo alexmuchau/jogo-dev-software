@@ -1,16 +1,23 @@
 #ifndef H_ENEMY
 #define H_ENEMY
 
+#include "lib.h"
 #include <ncurses.h>
+#include "bomb.h"
 
 class Enemy{
-    int enemy_y, enemy_x, xMax, yMax;
-    char character;
+    int y, x;
+    int yMax, xMax;
     WINDOW * curwin;
+    char character;
     public:
-        Enemy(WINDOW * win, int y, int x, char c);
+        Enemy(WINDOW * win, int yMax, int xMax, char c);
         void move();
         void draw();
+        void mvup();
+        void mvdown();
+        void mvleft();
+        void mvright();
 };
 
 #endif

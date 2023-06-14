@@ -7,38 +7,67 @@
 #include <ctime>
 
 
-Enemy::Enemy(WINDOW * win, int y, int x, char c){
+Enemy::Enemy(WINDOW * win, int yMax, int xMax, char c) : yMax(yMax), xMax(xMax) {
+    srand(time(0));  //random number generator
     curwin = win;
-    enemy_y = y;
-    enemy_x = x;
+    y = rand() % yMax;
+    x = rand() % xMax;
     getmaxyx(curwin, yMax, xMax);
     keypad(curwin, true);
     character = c;
 }
+void Enemy::mvup(){
+  mvwaddch(curwin, y, x, ' ');
+  y--;
+  if(y < 1){
+    y = 1;
+  }
+}
 
-void move() {
-    while (true){
-        clear();
+void Enemy::mvdown(){
+  mvwaddch(curwin, y, x, ' ');
+  y++;
+  if(y > y - 2){
+    y = y - 2;
+  }
+}
 
-        int direction = rand() % 4:         //Move inimigo aleatoriamente
+void Enemy::mvleft(){
+  mvwaddch(curwin, y, x, ' ');
+  x--;
+  if(x < 1){
+    x = 1;
+  }
+}
 
-        switch (direction){
-            case 0:
-                if (enemy_y > 0) enemy_y--;             //Cima
-                break
-            case 1:
-                if (enemy_y < yMax - 1) enemy_y++;     //Baixo
-                break;
-            case 2:
-                if (enemy_x > 0) enemy_x--;            //Esquerda
-                break;
-            case 3:
-                if (enemy_x < xMax - 1) enemy_x++;      //DIreita
-                break;
-        }
+void Enemy::mvright(){
+  mvwaddch(curwin, y, x, ' ');
+  x++;
+  if(x > x - 2){
+    x = x - 2;
+  }
+}
+
+void Enemy::move() {
+
+    int direction = rand() % 4;         //Move inimigo aleatoriamente
+
+    switch (direction){
+        case 0:
+            mvup();             //Cima
+            break;
+        case 1:
+            mvdown();     //Baixo
+            break;
+        case 2:
+            mvleft();            //Esquerda
+            break;
+        case 3:
+            mvright();      //DIreita
+            break;
     }
 }
 
-void draw() {
-    mvprintw(y, x, "X");
+void Enemy::draw() {            //Desenhar inimigo
+    mvprintw(y, x, "c");        
 };
