@@ -17,7 +17,7 @@ int main()
     cbreak();
     curs_set(0);
 
-    GameMap game_map(tools.min_screen_lines - 10);
+    GameMap game_map(tools.min_screen_lines - 10, 1);
 
     box(game_map.get_win(), 0, 0);
     refresh();

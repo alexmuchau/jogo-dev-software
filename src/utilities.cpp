@@ -1,13 +1,13 @@
 #include "utilities.h"
 #include <sys/ioctl.h>
 
-Utilities::Utilities(): min_screen_cols(80), min_screen_lines(41){
+Utilities::Utilities(): min_screen_cols(80), min_screen_lines(42){
   get_screen_size();
 }
 
-Utilities::~Utilities(){
-  delete [] this;
-}
+// Utilities::~Utilities(){
+//   delete [] this;
+// }
 
 void Utilities::get_screen_size() {
   struct winsize w;

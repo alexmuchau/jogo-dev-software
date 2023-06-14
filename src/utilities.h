@@ -11,7 +11,7 @@ class Utilities {
       void getcenter_objw(WINDOW * screen, const double& obj_height, const double& obj_width, double * cast_start_y, double * cast_start_x);
       bool screen_verification();
       Utilities();
-      ~Utilities();
+      // ~Utilities();
 };
 
 #endif
