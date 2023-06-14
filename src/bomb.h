@@ -1,8 +1,7 @@
 #ifndef H_BOMB
 #define H_BOMB
 
-#include <ncurses.h>
-#include <chrono>
+#include "lib.h"
 
 class Bomb {
     int range;

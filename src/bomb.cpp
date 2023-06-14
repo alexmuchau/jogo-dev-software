@@ -1,13 +1,10 @@
 #include "bomb.h"
-#include <ncurses.h>
-#include <chrono>
-#include <iostream>
+
 
 Bomb::Bomb(int range, int cooldown){
     this->range = range;
-    this->cooldown = cooldown;
-    cooldown = (float) cooldown;
-    last_cast = 0;
+    this->cooldown = (float) cooldown;
+    active = false;
 }
 
 void Bomb::cast(int yLoc, int xLoc){

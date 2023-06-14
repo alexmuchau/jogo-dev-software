@@ -1,4 +1,5 @@
 #include "player.h"
+#include "bomb.h"
 
 Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string bomber_name){
   game_win = win;
@@ -6,6 +7,7 @@ Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string b
   xLoc = x;
   character = c;
   name = bomber_name;
+  bomb = new Bomb(3, 5);
 }
 
 void Player::mvup(){
