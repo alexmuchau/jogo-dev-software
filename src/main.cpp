@@ -81,16 +81,29 @@ int main()
 
     // p.overview();
 
-   Enemy * ptr = new Enemy(playwin, 4, 4, '7');
+    Enemy *enemy = new Enemy(xMax / 2, yMax / 2);
 
-    while(true) {
+    nodelay(stdscr, TRUE);
+    timeout(200);                   //Velocidade que meu inimigo está se movendo
 
-        ptr->move();
-        ptr->draw();
+    while (true) {
+        clear();
 
-        refresh();                  //Cancelado quando o inimigo morrer e é chamado o destrutor dele
+        enemy->moverAleatoriamente(xMax, yMax);          
+        enemy->desenhar();
 
+        refresh();
+
+        int ch = getch();
+        if (ch == 'q') {            //AQUI SE ELE MORRER COM A BOMBA FAZEMOS UM DESTRUTOR DO BONECO
+            break;
+        }
+
+        if (ch != ERR) {
+            enemy->desenhar();
+        }
         napms(100);
+
     } 
 
     endwin();
