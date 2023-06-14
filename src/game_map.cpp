@@ -1,8 +1,8 @@
 #include "game_map.h"
 
 // chars
-#define WALL 0
-#define DEST_WALL '.'
+#define WALL ACS_CKBOARD
+#define DEST_WALL ACS_DIAMOND
 
 // colors
 #define C_WALL 1
@@ -27,8 +27,8 @@ void GameMap::instantiate_colors(){
   color_content(COLOR_BLACK, &r, &g, &b);
 
   init_color(8, r, g, b);
-  init_pair(C_WALL, COLOR_BLACK, COLOR_RED);
-  init_pair(C_DEST_WALL, COLOR_BLACK, COLOR_BLUE);
+  init_pair(C_WALL, COLOR_BLACK, COLOR_WHITE);
+  init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_BLUE);
 }
 
 void GameMap::construct_walls(){
