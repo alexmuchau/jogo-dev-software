@@ -7,8 +7,6 @@ int main()
 {
     Utilities tools = Utilities();
 
-    cout << tools.screen_cols << " " << tools.screen_rows << endl;
-
     if(tools.screen_verification() == false) {
         exit(0);
     }
@@ -19,14 +17,7 @@ int main()
     cbreak();
     curs_set(0);
 
-    // inicializando cores
-    start_color();
-    use_default_colors();
-
-    double start_y = 0, start_x = 0;
-    tools.get_map_startxy(&start_y, &start_x);
-
-    GameMap game_map(tools.min_screen_rows - 10, start_y, start_x);
+    GameMap game_map(tools.min_screen_lines - 10);
 
     box(game_map.get_win(), 0, 0);
     refresh();

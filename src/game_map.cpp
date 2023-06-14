@@ -1,4 +1,5 @@
 #include "game_map.h"
+#include "utilities.h"
 
 // chars
 #define WALL ACS_CKBOARD
@@ -9,9 +10,14 @@
 #define C_DEST_WALL 2
 
 
-GameMap::GameMap(const int& game_screen_max, const double &start_y, const double &start_x) {
+GameMap::GameMap(const int& game_screen_max) {
   win_height = game_screen_max;
   win_width = game_screen_max*2;
+
+  double start_x = 0, start_y = 0;
+  Utilities tools = Utilities();
+
+  tools.getcenter_objw(stdscr, win_height, win_width, &start_y, &start_x);
   game_win = newwin(win_height, win_width, start_y, start_x);
   start_color();
   use_default_colors();
