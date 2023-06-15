@@ -60,6 +60,9 @@ int main()
     tools.getcenter_objw(stdscr, 2, 32, &start_y, &start_x);
     StatusBar status_bar(tools.screen_lines - 2, start_x, COLOR_PAIR(C_DETAIL));
 
+    GameMap game_map(tools.min_screen_lines - 10, 1);
+    nodelay(game_map.get_win(), true);
+    timeout(0);
 
     refresh();
     wrefresh(game_map.get_win());

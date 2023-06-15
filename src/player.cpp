@@ -11,28 +11,32 @@ Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string b
 }
 
 void Player::mvup(){
-  if(mvwinch(game_win, yLoc - 1, xLoc) == ' '){
+  if(mvwinch(game_win, yLoc - 1, xLoc) == ' ',
+     mvwinch(game_win, yLoc + 1, xLoc) == '$'){
     mvwaddch(game_win, yLoc, xLoc, ' ');
     yLoc--;
   }
 }
 
 void Player::mvdown(){
-  if(mvwinch(game_win, yLoc + 1, xLoc) == ' '){
+  if(mvwinch(game_win, yLoc + 1, xLoc) == ' ',
+     mvwinch(game_win, yLoc + 1, xLoc) == '$'){
     mvwaddch(game_win, yLoc, xLoc, ' ');
     yLoc++;
   }
 }
 
 void Player::mvleft(){
-  if(mvwinch(game_win, yLoc, xLoc - 1) == ' '){
+  if(mvwinch(game_win, yLoc, xLoc - 1) == ' ',
+     mvwinch(game_win, yLoc + 1, xLoc) == '$'){
     mvwaddch(game_win, yLoc, xLoc, ' ');
     xLoc--;
   }
 }
 
 void Player::mvright(){
-  if(mvwinch(game_win, yLoc, xLoc + 1) == ' '){
+  if(mvwinch(game_win, yLoc, xLoc + 1) == ' ',
+     mvwinch(game_win, yLoc + 1, xLoc) == '$'){
     mvwaddch(game_win, yLoc, xLoc, ' ');
     xLoc++;
   }
@@ -53,6 +57,8 @@ int Player::getmv() {
     case KEY_RIGHT:
       mvright();
       break;
+    case 'e':
+      bomb->cast(yLoc, xLoc);
     default:
       break;
   }

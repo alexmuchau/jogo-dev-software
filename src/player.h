@@ -18,8 +18,8 @@ class Player {
     int xLoc, yLoc, xMax, yMax;
     char character;
     string name;
-    WINDOW * game_win;
     Bomb * bomb;
+    WINDOW * game_win;
 };
 
 #endif
