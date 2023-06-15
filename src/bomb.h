@@ -8,15 +8,14 @@ class Bomb {
     int cooldown;
     std::chrono::time_point<std::chrono::system_clock> last_cast;
     bool active;
-    int vCast_yPos;
-    int vCast_xPos;
-    int hCast_yPos;
-    int hCast_xPos;
+    int Cast_yPos;
+    int Cast_xPos;
+    void renderCast(WINDOW *);
 
     public:
-        void cast(int yLoc, int xLoc);
-        void display(WINDOW * curwin);
-        Bomb(int range, int cooldown);
+        void cast(int, int);
+        void display(WINDOW *);
+        Bomb(int, int);
 };
 
 #endif

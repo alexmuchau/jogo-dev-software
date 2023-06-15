@@ -15,27 +15,47 @@ void Bomb::cast(int yLoc, int xLoc){
     std::chrono::duration<double> elapsed = now - last_cast;
 
     if (elapsed.count() > cooldown){
-        vCast_yPos = yLoc;
-        vCast_xPos = xLoc;
-        hCast_yPos = yLoc;
-        hCast_xPos = xLoc;
+        Cast_yPos = yLoc;
+        Cast_xPos = xLoc;
         last_cast = std::chrono::system_clock::now();
         active = true;
     }
 }
 
+void Bomb::renderCast(WINDOW * curwin){
+    for(int i=1; i<=range; i++){
+        if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == ' ' ||
+            (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2)){
+            mvwaddch(curwin, Cast_yPos + i, Cast_xPos, '$'); // vertical line
+        }
+        else if (mvwinch(curwin, Cast_yPos + i, Cast_xPos) != '@') break;
+    }
+    for(int i=1; i<=range; i++){
+        if(mvwinch(curwin, Cast_yPos - i, Cast_xPos) == ' ' ||
+            (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2)){
+            mvwaddch(curwin, Cast_yPos - i, Cast_xPos, '$'); // vertical line
+        }
+        else if (mvwinch(curwin, Cast_yPos - i, Cast_xPos) != '@') break;
+    }
+    for(int i=1; i<=range; i++){
+        if(mvwinch(curwin, Cast_yPos, Cast_xPos + i) == ' ' ||
+            (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_COLOR) == COLOR_PAIR(2)){
+            mvwaddch(curwin, Cast_yPos, Cast_xPos + i, '$'); // horizontal line
+        }
+        else if (mvwinch(curwin, Cast_yPos, Cast_xPos + i) != '@') break;
+    }
+    for(int i=1; i<=range; i++){
+        if(mvwinch(curwin, Cast_yPos, Cast_xPos - i) == ' ' ||
+            (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_COLOR) == COLOR_PAIR(2)){
+            mvwaddch(curwin, Cast_yPos, Cast_xPos - i, '$'); // horizontal line
+        }
+        else if (mvwinch(curwin, Cast_yPos, Cast_xPos - i) != '@') break;
+    }
+}
+
 void Bomb::display(WINDOW * curwin){
     if (active){
-        for(int i=(-range); i<5; i++){
-            if(mvwinch(curwin, vCast_yPos + i, vCast_xPos) == ' ' ||
-               (mvwinch(curwin, vCast_yPos + i, vCast_xPos) & A_COLOR) == COLOR_PAIR(2)){
-                mvwaddch(curwin, vCast_yPos + i, vCast_xPos, '$'); // vertical line
-            }
-            if(mvwinch(curwin, vCast_yPos, vCast_xPos + i) == ' ' ||
-               (mvwinch(curwin, vCast_yPos, vCast_xPos + i) & A_COLOR) == COLOR_PAIR(2)){
-                mvwaddch(curwin, hCast_yPos, hCast_xPos + i, '$'); // horizontal line
-            }
-        }
+        renderCast(curwin);
 
         auto now = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed = now - last_cast;
@@ -43,11 +63,11 @@ void Bomb::display(WINDOW * curwin){
         //std::cout << elapsed.count();
         if (elapsed.count() > 2){
             for(int i=(-range); i<5; i++){
-                if(mvwinch(curwin, vCast_yPos + i, vCast_xPos) == '$'){
-                    mvwaddch(curwin, vCast_yPos + i, vCast_xPos, ' '); // vertical line
+                if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == '$'){
+                    mvwaddch(curwin, Cast_yPos + i, Cast_xPos, ' '); // vertical line
                 }
-                if(mvwinch(curwin, vCast_yPos, vCast_xPos + i) == '$'){
-                    mvwaddch(curwin, hCast_yPos, hCast_xPos + i, ' '); // horizontal line
+                if(mvwinch(curwin, Cast_yPos, Cast_xPos + i) == '$'){
+                    mvwaddch(curwin, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
                 }
             }
             // mvwvline(curwin, vCast_yPos, vCast_xPos, ' ', (range*2)+1); // vertical line
