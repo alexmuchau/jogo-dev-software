@@ -1,10 +1,11 @@
 #include "player.h"
 
-Player::Player(WINDOW * win, int y, int x, char c){
+Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string bomber_name){
   game_win = win;
   yLoc = y;
   xLoc = x;
   character = c;
+  name = bomber_name;
 }
 
 void Player::mvup(){

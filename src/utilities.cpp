@@ -1,7 +1,7 @@
 #include "utilities.h"
 #include <sys/ioctl.h>
 
-Utilities::Utilities(): min_screen_cols(80), min_screen_lines(42){
+Utilities::Utilities(): min_screen_cols(30), min_screen_lines(22), max_screen_cols(100), max_screen_lines(30){
   get_screen_size();
 }
 
@@ -28,7 +28,14 @@ bool Utilities::screen_verification() {
     cout << "Atual tamanho: " << screen_cols << "x" << screen_lines << endl;
 
     return false;
+  } else if (screen_cols > max_screen_cols || screen_lines > max_screen_lines){
+    cout << "Diminua o terminal para: " << max_screen_cols << "x" << max_screen_lines << endl;
+    cout << "Atual tamanho: " << screen_cols << "x" << screen_lines << endl;
+
+    return false;
   }
+
+  cout << "Atual tamanho: " << screen_cols << "x" << screen_lines << endl;
 
   return true;
 }

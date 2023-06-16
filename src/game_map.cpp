@@ -1,8 +1,7 @@
 #include "game_map.h"
-#include "utilities.h"
 
 // chars
-#define WALL ACS_CKBOARD
+#define WALL '#'
 #define DEST_WALL ACS_DIAMOND
 
 // colors
@@ -10,36 +9,48 @@
 #define C_DEST_WALL 2
 
 
-GameMap::GameMap(const int& game_screen_max, const int& opt) {
+GameMap::GameMap(const int& game_screen_max, const int& opt, const double& start_y, const double& start_x) {
   win_height = game_screen_max;
   win_width = game_screen_max*2;
 
-  double start_x = 0, start_y = 0;
-  Utilities tools = Utilities();
-
-  tools.getcenter_objw(stdscr, win_height, win_width, &start_y, &start_x);
   game_win = newwin(win_height, win_width, start_y, start_x);
-  start_color();
-  use_default_colors();
+
+  box(game_win, 0, 0);
   keypad(game_win, true);
 
   instantiate_colors();
   construct_walls(opt);
-  construct_dest_walls();
 }
 
 void GameMap::construct_walls(const int& opt){
   wattron(game_win, COLOR_PAIR(C_WALL));
-  wattron(game_win, A_STANDOUT);
 
   switch(opt) {
     case 1:
-      for (int line = 3; line < win_height - 3; line += 4)
+      // vlinhas laterais
+      /// esquerda 
+      addvline_wall(3, 2, (win_height/2) - 2);
+      addvline_wall((win_height/2) + 2, 2, (win_height/2) - 1);
+
+      /// direita 
+      addvline_wall(0, win_width - 3, (win_height/2) - 1);
+      addvline_wall((win_height/2) + 1, win_width - 3, (win_height/2) - 2);
+
+      // hlinhas extremos
+      addhline_wall(2, 5, win_width - 9);
+      addhline_wall(win_height - 3, 4, win_width - 9);
+
+      // bloco meio
+      addpers_wall(3, 6, (win_height/2) - 1, (win_width/2) - 3);
+
+      // bloquinhos do meio
+      for (int count = 0; count < 2; count++)
       {
-        for (int col = 3; col < win_width - 2; col += 4)
-        {
-          add2x2_wall(line, col);
-        }
+        // linha entre bloquinhos
+        addhline_wall(4 + (count*(win_height - 9)), 9 - count, win_width - 2*8 - 1);
+
+        add2x2_wall(4 + (count*(win_height - 10)), 5 - count);
+        add2x2_wall(4 + (count*(win_height - 10)), win_width - 6 - count);
       }
       break;
     case 2:
@@ -52,50 +63,69 @@ void GameMap::construct_walls(const int& opt){
       break;
   }
 
-  standout();
   // watrroff = desligar cores para chars
   wattroff(game_win, COLOR_PAIR(C_WALL));
-  wattroff(game_win, A_STANDOUT);
   
+  construct_dest_walls();
+
 }
 
-void GameMap::add_wall(const int& x, const int& y) {
-// TODO
+void GameMap::addvline_wall(const int& start_y, const int& start_x, const int& qtd) {
+  mvwvline(game_win, start_y, start_x, WALL, qtd);
 }
 
-void GameMap::add2x2_wall(const int& xMin, const int& yMin) {
-  mvwvline(game_win, xMin, yMin, WALL, 2);
-  mvwvline(game_win, xMin, yMin + 1, WALL, 2);
+void GameMap::addhline_wall(const int& start_y, const int& start_x, const int& qtd) {
+  mvwhline(game_win, start_y, start_x, WALL, qtd);
 }
 
-void GameMap::addpers_wall(int height, int width, const int& xMin, const int& yMin) {
-// TODO
+void GameMap::add_wall(const int& y, const int& x) {
+  mvwvline(game_win, y, x, WALL, 1);
 }
 
+void GameMap::add2x2_wall(const int& start_y, const int& start_x) {
+  mvwvline(game_win, start_y, start_x, WALL, 2);
+  mvwvline(game_win, start_y, start_x + 1, WALL, 2);
+}
+
+void GameMap::addpers_wall(int height, int width, const int& start_y, const int& start_x) {
+  for (int i = 0; i < width; i++)
+  {
+    mvwvline(game_win, start_y, start_x + i, WALL, height);
+  }
+}
 
 void GameMap::construct_dest_walls(){
-  int count = 0;
-
-  // watrron = ligar cores para chars
+  int count = 0, max_count = 3;
   wattron(game_win, COLOR_PAIR(C_DEST_WALL));
-  // wattron(game_win, A_STANDOUT);
-  for (int y = 1; y < win_height; y++)
+
+  int x, y;
+  vector<int> availablePos; 
+  for (y = 1; y < 3; y++)
   {
-    while (count < 3*win_width / 4)
+    for (x = 4; x < win_width - 1; x++)
     {
-      int x = 0 + (rand() % win_width);
       if(mvwinch(game_win, y, x) == ' ') {
-        mvwvline(game_win, y, x, DEST_WALL, 1);
+        availablePos.push_back(x);
       }
-      count += 1;
     }
-    count = 0;
+
+    for (auto x = availablePos.begin(); x != availablePos.end(); ++x) {
+      if(count < max_count) {
+        mvwaddch(game_win, y, *x, DEST_WALL);
+      } else {
+        max_count = 1 + (rand() % 5);
+        count = 0;
+      
+        continue;
+      }
+      count++;
+    }
+
+    availablePos.clear();
+    
   }
   
-  standout();
-  // watrroff = desligar cores para chars
   wattroff(game_win, COLOR_PAIR(C_DEST_WALL));
-  wattroff(game_win, A_STANDOUT);
 }
 
 WINDOW * GameMap::get_win(){
@@ -108,5 +138,5 @@ void GameMap::instantiate_colors(){
 
   init_color(8, r, g, b);
   init_pair(C_WALL, COLOR_BLACK, COLOR_WHITE);
-  init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_BLUE);
+  init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_CYAN);
 }
