@@ -1,5 +1,4 @@
 #include "game_map.h"
-#include "utilities.h"
 
 // chars
 #define WALL '#'
@@ -10,14 +9,10 @@
 #define C_DEST_WALL 2
 
 
-GameMap::GameMap(const int& game_screen_max, const int& opt) {
+GameMap::GameMap(const int& game_screen_max, const int& opt, const double& start_y, const double& start_x) {
   win_height = game_screen_max;
   win_width = game_screen_max*2;
 
-  double start_x = 0, start_y = 0;
-  Utilities tools = Utilities();
-
-  tools.getcenter_objw(stdscr, win_height, win_width, &start_y, &start_x);
   game_win = newwin(win_height, win_width, start_y, start_x);
 
   box(game_win, 0, 0);
@@ -99,7 +94,6 @@ void GameMap::addpers_wall(int height, int width, const int& start_y, const int&
   }
 }
 
-
 void GameMap::construct_dest_walls(){
   int count = 0, max_count = 3;
   wattron(game_win, COLOR_PAIR(C_DEST_WALL));
@@ -144,5 +138,5 @@ void GameMap::instantiate_colors(){
 
   init_color(8, r, g, b);
   init_pair(C_WALL, COLOR_BLACK, COLOR_WHITE);
-  init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_BLUE);
+  init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_CYAN);
 }
