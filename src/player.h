@@ -4,7 +4,7 @@
 
 class Player {
   public:
-    Player(WINDOW * win, int y, int x, char c);
+    Player(WINDOW * win, const int& y, const int& x, const char& c, string name);
     void mvup();
     void mvdown();
     void mvleft();
@@ -14,6 +14,7 @@ class Player {
   private:
     int xLoc, yLoc, xMax, yMax;
     char character;
+    string name;
     WINDOW * game_win;
 };
 

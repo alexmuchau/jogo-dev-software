@@ -18,13 +18,29 @@ int main()
     initscr();
     start_color();
     use_default_colors();
-    noecho();
-    cbreak();
-    curs_set(0);
 
+    double start_x = 0, start_y = 0;
+    string bomber_name_label = " DIGITE UM NOME PARA SEU BOMBER ";
+    char * bomber_name = new char[bomber_name_label.length()];
+    tools.getcenter_objw(stdscr, 4, bomber_name_label.length() + 2, &start_y, &start_x);
+
+    WINDOW * inputwindow = newwin(4, bomber_name_label.length() + 2, start_y, start_x);
+    box(inputwindow, 0, 0);
+    
+    mvwaddstr(inputwindow, 1, 1, bomber_name_label.c_str());
+    mvwgetstr(inputwindow, 2, 2, bomber_name);
+    refresh();
+    wrefresh(inputwindow);
+    if(!bomber_name) {
+        noecho();
+        cbreak();
+        curs_set(0);
+        cout << "Digite um nome valido!" << endl;
+        endwin();
+        return 0;
+    }
 
     // inicializando mapa
-    double start_x = 0, start_y = 0;
     tools.getcenter_objw(stdscr, 15, 15*2, &start_y, &start_x);
     GameMap game_map(15, 1, start_y, start_x);
 
@@ -47,11 +63,15 @@ int main()
     refresh();
     wrefresh(game_map.get_win());
 
-    Player * p = new Player(game_map.get_win(), 1, 1, '@');
+    Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
     do {
         p->display();
         wrefresh(game_map.get_win());
     } while(p->getmv() != 'x');
+
+    // delete [] &game_map;
+
+    // p.overview();
 
     endwin();
 
