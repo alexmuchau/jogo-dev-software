@@ -10,6 +10,8 @@ Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string b
   bomb = new Bomb(3, 5);
 }
 
+Player::~Player() {};
+
 void Player::mvup(){
   if(mvwinch(game_win, yLoc - 1, xLoc) == ' ' ||
      mvwinch(game_win, yLoc - 1, xLoc) == '$'){
@@ -67,5 +69,10 @@ int Player::getmv() {
 
 void Player::display(){
   bomb->display(game_win);
-  mvwaddch(game_win, yLoc, xLoc, character);
+  if(((mvwinch(game_win, yLoc, xLoc) & A_CHARTEXT) == '$') & ((mvwinch(game_win, yLoc, xLoc) & A_COLOR) == COLOR_PAIR(3))){
+    Player::~Player();
+  }
+  else{
+    mvwaddch(game_win, yLoc, xLoc, character);
+  }
 }

@@ -25,28 +25,32 @@ void Bomb::cast(int yLoc, int xLoc){
 void Bomb::renderCast(WINDOW * curwin){
     for(int i=1; i<=range; i++){
         if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == ' ' ||
-            (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2)){
+           (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
             mvwaddch(curwin, Cast_yPos + i, Cast_xPos, '$'); // vertical line
         }
         else if (mvwinch(curwin, Cast_yPos + i, Cast_xPos) != '@') break;
     }
     for(int i=1; i<=range; i++){
         if(mvwinch(curwin, Cast_yPos - i, Cast_xPos) == ' ' ||
-            (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2)){
+           (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
+            (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_CHARTEXT) == '$'){
             mvwaddch(curwin, Cast_yPos - i, Cast_xPos, '$'); // vertical line
         }
         else if (mvwinch(curwin, Cast_yPos - i, Cast_xPos) != '@') break;
     }
     for(int i=1; i<=range; i++){
         if(mvwinch(curwin, Cast_yPos, Cast_xPos + i) == ' ' ||
-            (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_COLOR) == COLOR_PAIR(2)){
+           (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
             mvwaddch(curwin, Cast_yPos, Cast_xPos + i, '$'); // horizontal line
         }
         else if (mvwinch(curwin, Cast_yPos, Cast_xPos + i) != '@') break;
     }
     for(int i=1; i<=range; i++){
         if(mvwinch(curwin, Cast_yPos, Cast_xPos - i) == ' ' ||
-            (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_COLOR) == COLOR_PAIR(2)){
+           (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_CHARTEXT) == '$'){
             mvwaddch(curwin, Cast_yPos, Cast_xPos - i, '$'); // horizontal line
         }
         else if (mvwinch(curwin, Cast_yPos, Cast_xPos - i) != '@') break;

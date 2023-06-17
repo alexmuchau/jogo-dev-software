@@ -1,5 +1,5 @@
 # Name of the project
-PROJ_NAME=bomberman
+PROJ_NAME=bomberman.o
  
 # .cpp files
 CPP_SOURCE=$(wildcard ./src/*.cpp)
