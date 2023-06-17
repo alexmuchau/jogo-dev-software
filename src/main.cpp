@@ -32,13 +32,14 @@ int main()
     refresh();
     wrefresh(inputwindow);
     if(!bomber_name) {
-        noecho();
-        cbreak();
-        curs_set(0);
         cout << "Digite um nome valido!" << endl;
         endwin();
         return 0;
     }
+
+    noecho();
+    cbreak();
+    curs_set(0);
 
     // inicializando mapa
     tools.getcenter_objw(stdscr, 15, 15*2, &start_y, &start_x);
