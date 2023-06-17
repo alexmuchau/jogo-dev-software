@@ -74,6 +74,7 @@ int main()
     Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
     do {
         p->display();
+        enemy->display();
         wrefresh(game_map.get_win());
     } while((p->getmv() != 'x') & (p->alive));
 
@@ -100,11 +101,15 @@ int main()
         }
 
         if (ch != ERR) {
-            enemy->desenhar();
+            enemy->display();
         }
         napms(100);
 
-    } 
+    } while(p->getmv() != 'x');
+
+
+    nodelay(stdscr, TRUE);
+    timeout(200);                   //Velocidade que meu inimigo está se movendo
 
     endwin();
 

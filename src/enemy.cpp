@@ -6,35 +6,36 @@
 #include "bomb.h"
 #include <ctime>
 
-Enemy::Enemy(int initialX, int initialY) : x(initialX), y(initialY){}     //Já foi construido com os parâmentros 
+Enemy::Enemy(WINDOW * win, int y, int x, char c){
+  game_win = win;
+  yLoc = y;
+  xLoc = x;
+  character = c;
+}   
 
-void Enemy::moverAleatoriamente(int max_x, int max_y) {
+void Enemy::mvrandom(game_win, int max_x, int max_y) {
     int direction = std::rand() % 4; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
     switch (direction) {
         case 0:
-            y--;
+            max_y--;
             break;
         case 1:
-            y++;
+            max_y++;
             break;
         case 2:
-            x--;
+            max_x--;
             break;
         case 3:
-            x++;
+            max_x++;
             break;
     }
 
-    x = std::max(0, std::min(x, max_x - 1));                //Limitar as coordenadas dentro dos limites da tela
-    y = std::max(0, std::min(y, max_y - 1));
+    max_x = std::max(0, std::min(max_x, max_x - 1));                //Limitar as coordenadas dentro dos limites da tela
+    max_y = std::max(0, std::min(max_y, max_y - 1));
 }
 
-void Enemy::desenhar() {
-    mvprintw(y, x, "O");
-    mvprintw(y - 1, x, "|");                        //Imagem do inimigo
-    mvprintw(y + 1, x, "|");
-    mvprintw(y, x - 1, "-");
-    mvprintw(y, x + 1, "-");
+void Enemy::display() {
+    mvwaddch(game_win, yLoc, xLoc, character);
 }
 
 /*Enemy::Enemy(WINDOW * win, int yMax, int xMax, char c) : yMax(yMax), xMax(xMax) {

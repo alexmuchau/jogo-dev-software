@@ -163,3 +163,8 @@ void GameMap::instantiate_colors(){
   init_pair(C_WALL, COLOR_BLACK, COLOR_WHITE);
   init_pair(C_DEST_WALL, COLOR_WHITE, COLOR_CYAN);
 }
+
+
+void GameMap::drawEnemy(int y, int x, char character) {
+    mvwaddch(game_win, y, x, character);
+}

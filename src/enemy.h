@@ -5,12 +5,13 @@
 
 
 class Enemy {
-    int x;
-    int y;
+    int xLoc, yLoc, xMax, yMax;
+    char character;
+    WINDOW * game_win;
     public:
-        Enemy(int initialX, int initialY);
-        void moverAleatoriamente(int max_x, int max_y);
-        void desenhar();
+        Enemy(WINDOW * win, int y, int x, char c);
+        void mvrandom(int max_x, int max_y);
+        void display();
 };
 
 #endif
