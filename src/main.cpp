@@ -36,6 +36,9 @@ int main()
         endwin();
         return 0;
     }
+    noecho();
+    cbreak();
+    curs_set(0);
 
     noecho();
     cbreak();
@@ -60,6 +63,9 @@ int main()
     tools.getcenter_objw(stdscr, 2, 32, &start_y, &start_x);
     StatusBar status_bar(tools.screen_lines - 2, start_x, COLOR_PAIR(C_DETAIL));
 
+    //GameMap game_map(tools.min_screen_lines - 10, 1);
+    nodelay(game_map.get_win(), true);
+    timeout(0);
 
     refresh();
     wrefresh(game_map.get_win());
@@ -68,7 +74,7 @@ int main()
     do {
         p->display();
         wrefresh(game_map.get_win());
-    } while(p->getmv() != 'x');
+    } while((p->getmv() != 'x') & (p->alive));
 
     // delete [] &game_map;
 
