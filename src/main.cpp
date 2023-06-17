@@ -42,10 +42,6 @@ int main()
     cbreak();
     curs_set(0);
 
-    noecho();
-    cbreak();
-    curs_set(0);
-
     // inicializando mapa
     tools.getcenter_objw(stdscr, 15, 15*2, &start_y, &start_x);
     GameMap game_map(15, 1, start_y, start_x);
@@ -72,12 +68,12 @@ int main()
     refresh();
     wrefresh(game_map.get_win());
 
-    Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
+    Player p(game_map.get_win(), 1, 1, '@', bomber_name);
     do {
         p->display();
         // enemy->display();
         wrefresh(game_map.get_win());
-    } while((p->getmv() != 'x') & (p->alive));
+    } while((p.getmv() != 'x') & (p.alive));
 
     // delete [] &game_map;
 
@@ -124,6 +120,8 @@ int main()
 
     endwin();
 
+
+    std::cout << "\nO jogo acabou\n";
 
     return 0;
 }
