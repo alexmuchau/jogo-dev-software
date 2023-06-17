@@ -109,9 +109,9 @@ void GameMap::construct_dest_walls(){
       }
     }
 
-    for (auto x = availablePos.begin(); x != availablePos.end(); ++x) {
+    for (auto &x: availablePos) {
       if(count < max_count) {
-        mvwaddch(game_win, y, *x, DEST_WALL);
+        mvwaddch(game_win, y, x, DEST_WALL);
       } else {
         max_count = 1 + (rand() % 5);
         count = 0;
@@ -121,8 +121,31 @@ void GameMap::construct_dest_walls(){
       count++;
     }
 
-    availablePos.clear();
-    
+    availablePos.clear();   
+  }
+
+  for (y = 3; y < win_height; y++)
+  {
+    for (x = 1; x < win_width - 1; x++)
+    {
+      if(mvwinch(game_win, y, x) == ' ') {
+        availablePos.push_back(x);
+      }
+    }
+
+    for (auto &x: availablePos) {
+      if(count < max_count) {
+        mvwaddch(game_win, y, x, DEST_WALL);
+      } else {
+        max_count = 1 + (rand() % 5);
+        count = 0;
+      
+        continue;
+      }
+      count++;
+    }
+
+    availablePos.clear();   
   }
   
   wattroff(game_win, COLOR_PAIR(C_DEST_WALL));
