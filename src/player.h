@@ -15,6 +15,7 @@ class Player {
     void mvright();
     int getmv();
     void display();
+    bool alive;
   private:
     int xLoc, yLoc, xMax, yMax;
     char character;

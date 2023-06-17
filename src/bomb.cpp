@@ -3,6 +3,7 @@
 
 // chars
 #define DEST_WALL ACS_DIAMOND
+#define BOMB_COLOR 7
 
 Bomb::Bomb(int range, int cooldown){
     this->range = range;
@@ -23,6 +24,9 @@ void Bomb::cast(int yLoc, int xLoc){
 }
 
 void Bomb::renderCast(WINDOW * curwin){
+    init_pair(BOMB_COLOR, COLOR_WHITE, COLOR_YELLOW);
+    wattron(curwin, COLOR_PAIR(BOMB_COLOR));
+
     for(int i=1; i<=range; i++){
         if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == ' ' ||
            (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
@@ -55,22 +59,30 @@ void Bomb::renderCast(WINDOW * curwin){
         }
         else if (mvwinch(curwin, Cast_yPos, Cast_xPos - i) != '@') break;
     }
+
+    wattroff(curwin, COLOR_PAIR(BOMB_COLOR));
 }
 
 void Bomb::display(WINDOW * curwin){
     if (active){
-        renderCast(curwin);
-
         auto now = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed = now - last_cast;
 
+        if(elapsed.count() > 2){
+            renderCast(curwin);
+        }
+        else{
+            mvwaddch(curwin, Cast_yPos, Cast_xPos, 'o');
+        }
+
         //std::cout << elapsed.count();
-        if (elapsed.count() > 2){
+        if (elapsed.count() > 4){
+            mvwaddch(curwin, Cast_yPos, Cast_xPos, ' ');
             for(int i=(-range); i<5; i++){
-                if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == '$'){
+                if((mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
                     mvwaddch(curwin, Cast_yPos + i, Cast_xPos, ' '); // vertical line
                 }
-                if(mvwinch(curwin, Cast_yPos, Cast_xPos + i) == '$'){
+                if((mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
                     mvwaddch(curwin, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
                 }
             }
