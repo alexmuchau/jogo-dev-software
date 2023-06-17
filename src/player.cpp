@@ -11,9 +11,11 @@ Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string b
   alive = true;
 }
 
-Player::~Player() {
+Player::~Player() {};
+
+void Player::die(){
   alive = false;
-};
+}
 
 void Player::mvup(){
   if(mvwinch(game_win, yLoc - 1, xLoc) == ' ' ||
@@ -73,7 +75,7 @@ int Player::getmv() {
 void Player::display(){
   bomb->display(game_win);
   if((mvwinch(game_win, yLoc, xLoc) & A_CHARTEXT) == '$'){
-    delete this;
+    die();
   }
   else{
     mvwaddch(game_win, yLoc, xLoc, character);

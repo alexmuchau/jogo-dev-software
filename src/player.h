@@ -16,6 +16,7 @@ class Player {
     int getmv();
     void display();
     bool alive;
+    void die();
   private:
     int xLoc, yLoc, xMax, yMax;
     char character;

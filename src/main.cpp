@@ -74,7 +74,7 @@ int main()
     do {
         p->display();
         wrefresh(game_map.get_win());
-    } while(p->getmv() != 'x' & p->alive);
+    } while((p->getmv() != 'x') & (p->alive));
 
     // delete [] &game_map;
 
