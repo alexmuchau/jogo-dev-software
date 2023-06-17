@@ -99,60 +99,72 @@ void GameMap::construct_dest_walls(){
   wattron(game_win, COLOR_PAIR(C_DEST_WALL));
 
   int x, y;
-  vector<int> availablePos; 
+  vector<int> available_pos; 
   for (y = 1; y < 3; y++)
   {
     for (x = 4; x < win_width - 1; x++)
     {
       if(mvwinch(game_win, y, x) == ' ') {
-        availablePos.push_back(x);
+        available_pos.push_back(x);
       }
     }
 
-    for (auto &x: availablePos) {
+    int index = 0;
+    for (auto &x: available_pos) {
       if(count < max_count) {
         mvwaddch(game_win, y, x, DEST_WALL);
+        available_pos.push_back(index);
       } else {
         max_count = 1 + (rand() % 5);
         count = 0;
-      
+        index++;
         continue;
       }
       count++;
     }
 
-    availablePos.clear();   
+    available_pos.clear();
   }
 
+  vector<vector<int>> matrix_pos;
   for (y = 3; y < win_height; y++)
   {
+    vector<int> available_pos; 
     for (x = 1; x < win_width - 1; x++)
     {
       if(mvwinch(game_win, y, x) == ' ') {
-        availablePos.push_back(x);
+        available_pos.push_back(x);
       }
     }
 
-    for (auto &x: availablePos) {
+    int index = 0;
+    for (auto &x: available_pos) {
       if(count < max_count) {
         mvwaddch(game_win, y, x, DEST_WALL);
+        available_pos.push_back(index);
       } else {
         max_count = 1 + (rand() % 5);
         count = 0;
-      
+        index++;
         continue;
       }
       count++;
     }
 
-    availablePos.clear();   
+    matrix_pos.push_back(available_pos);
   }
+
+  av_positions = matrix_pos;
   
   wattroff(game_win, COLOR_PAIR(C_DEST_WALL));
 }
 
 WINDOW * GameMap::get_win(){
   return game_win;
+}
+
+vector<vector<int>> GameMap::get_available_pos(){
+  return av_positions;
 }
 
 void GameMap::instantiate_colors(){
