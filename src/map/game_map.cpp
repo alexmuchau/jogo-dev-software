@@ -66,7 +66,7 @@ void GameMap::construct_walls(const int& opt){
   // watrroff = desligar cores para chars
   wattroff(game_win, COLOR_PAIR(C_WALL));
   
-  //construct_dest_walls();
+  construct_dest_walls();
 
 }
 
@@ -126,10 +126,9 @@ void GameMap::construct_dest_walls(){
     available_pos.clear();
   }
 
-  vector<vector<int>> matrix_pos;
   for (y = 3; y < win_height; y++)
   {
-    vector<int> available_pos; 
+    vector<int> available_pos;
     for (x = 1; x < win_width - 1; x++)
     {
       if(mvwinch(game_win, y, x) == ' ') {
@@ -151,10 +150,8 @@ void GameMap::construct_dest_walls(){
       count++;
     }
 
-    matrix_pos.push_back(available_pos);
+    av_positions.push_back(available_pos);
   }
-
-  av_positions = matrix_pos;
   
   wattroff(game_win, COLOR_PAIR(C_DEST_WALL));
 }
