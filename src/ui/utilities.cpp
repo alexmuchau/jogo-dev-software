@@ -1,6 +1,8 @@
 #include "utilities.h"
 #include <sys/ioctl.h>
 
+//class Enemy();
+
 Utilities::Utilities(): min_screen_cols(30), min_screen_lines(22), max_screen_cols(100), max_screen_lines(30){
   get_screen_size();
 }
@@ -38,4 +40,10 @@ bool Utilities::screen_verification() {
   cout << "Atual tamanho: " << screen_cols << "x" << screen_lines << endl;
 
   return true;
+}
+
+chrono::time_point<std::chrono::system_clock> Utilities::spawn_enemy(WINDOW * curwin, vector<Enemy*>& enemies, int yPos, int xPos){
+  Enemy * enemy = new Enemy(curwin, yPos, xPos, ENEMY_CHAR, enemies);
+  enemies.push_back(enemy);
+  return std::chrono::system_clock::now();
 }

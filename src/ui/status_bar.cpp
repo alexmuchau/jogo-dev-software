@@ -1,4 +1,5 @@
 #include "status_bar.h"
+
 #define C_STATUS_BG 5
 #define C_LABEL 6
 

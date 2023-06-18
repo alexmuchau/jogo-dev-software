@@ -1,10 +1,10 @@
 #include "lib.h"
-#include "player.h"
-#include "enemy.h"
-#include "game_map.h"
-#include "utilities.h"
-#include "status_bar.h"
-#include "final_screen.h"
+#include "./player/player.h"
+#include "./player/enemy.h"
+#include "./map/game_map.h"
+#include "./ui/utilities.h"
+#include "./ui/status_bar.h"
+#include "./ui/final_screen.h"
 
 #define C_DETAIL 3
 
@@ -42,10 +42,6 @@ int main()
     cbreak();
     curs_set(0);
 
-    noecho();
-    cbreak();
-    curs_set(0);
-
     // inicializando mapa
     tools.getcenter_objw(stdscr, 15, 15*2, &start_y, &start_x);
     GameMap game_map(15, 1, start_y, start_x);
@@ -72,58 +68,26 @@ int main()
     refresh();
     wrefresh(game_map.get_win());
 
-    Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
+    Player p(game_map.get_win(), 1, 1, '@', bomber_name);
+
+    EnemySpawner enemies(game_map.get_win());
+
     do {
-        p->display();
-        // enemy->display();
+        p.display();
+
+        enemies.try_spawn();
+        enemies.display();
+
         wrefresh(game_map.get_win());
-    } while((p->getmv() != 'x') & (p->alive));
+    } while((p.getmv() != 'x') & (p.alive));
 
     // delete [] &game_map;
 
     // p.overview();
 
-    // Enemy *enemy = new Enemy(xMax / 2, yMax / 2);
-
-    // nodelay(stdscr, TRUE);
-    // timeout(200);                   //Velocidade que meu inimigo está se movendo
-
-    // while (true) {
-    //     clear();
-
-    //     enemy->moverAleatoriamente(xMax, yMax);          
-    //     enemy->desenhar();
-
-    //     refresh();
-
-    //     int ch = getch();
-    //     if (ch == 'q') {            //AQUI SE ELE MORRER COM A BOMBA FAZEMOS UM DESTRUTOR DO BONECO
-    //         break;
-    //     }
-
-    //     if (ch != ERR) {
-    //         enemy->display();
-    //     }
-    //     napms(100);
-
-    // } while(p->getmv() != 'x');
-
-
-    // nodelay(stdscr, TRUE);
-    // timeout(200);           //Velocidade que meu inimigo está se movendo
-    // clearok(game_map.get_win(), true);
-    // wrefresh(game_map.get_win());
-    // werase(game_map.get_win());
-    // wrefresh(stdscr);
-    refresh();
-
-    FinalScreen final_screen(tools, *p);
-    wrefresh(final_screen.get_win());
-    do {
-    } while(p->getmv() != 'x');
-
     endwin();
 
+    std::cout << "\nO jogo acabou\n";
 
     return 0;
 }

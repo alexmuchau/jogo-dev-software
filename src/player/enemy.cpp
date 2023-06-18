@@ -1,42 +1,107 @@
-// #include "enemy.h"
-// #include <cstdlib>
-// #include <iostream>
-// #include <ncurses.h>
-// #include "lib.h"
-// #include "bomb.h"
-// #include <ctime>
+#include "enemy.h"
+#include "../lib.h"
 
-// Enemy::Enemy(WINDOW * win, int y, int x, char c){
-//   game_win = win;
-//   yLoc = y;
-//   xLoc = x;
-//   character = c;
-// }   
+#define ENEMY_MOVE_COOLDOWN 0.5
 
-// void Enemy::mvrandom(game_win, int max_x, int max_y) {
-//     int direction = std::rand() % 4; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
-//     switch (direction) {
-//         case 0:
-//             max_y--;
-//             break;
-//         case 1:
-//             max_y++;
-//             break;
-//         case 2:
-//             max_x--;
-//             break;
-//         case 3:
-//             max_x++;
-//             break;
-//     }
+Enemy::Enemy(WINDOW * win, int y, int x, char c, int i, EnemySpawner* spawner){
+  game_win = win;
+  yLoc = y;
+  xLoc = x;
+  character = c;
+  bomb = new Bomb(2, 10);
+  index = i;
+  this->spawner = spawner;
+}
 
-//     max_x = std::max(0, std::min(max_x, max_x - 1));                //Limitar as coordenadas dentro dos limites da tela
-//     max_y = std::max(0, std::min(max_y, max_y - 1));
-// }
+Enemy::~Enemy() {};
 
-// void Enemy::display() {
-//     mvwaddch(game_win, yLoc, xLoc, character);
-// }
+void Enemy::die(){
+  spawner->murder(this);
+}
+
+bool Enemy::mvup(){
+  if(mvwinch(game_win, yLoc - 1, xLoc) == ' '){
+    mvwaddch(game_win, yLoc, xLoc, ' ');
+    yLoc--;
+    return true;
+  }
+  return false;
+}
+
+bool Enemy::mvdown(){
+  if(mvwinch(game_win, yLoc + 1, xLoc) == ' '){
+    mvwaddch(game_win, yLoc, xLoc, ' ');
+    yLoc++;
+    return true;
+  }
+  return false;
+}
+
+bool Enemy::mvleft(){
+  if(mvwinch(game_win, yLoc, xLoc - 1) == ' '){
+    mvwaddch(game_win, yLoc, xLoc, ' ');
+    xLoc--;
+    return true;
+  }
+  return false;
+}
+
+bool Enemy::mvright(){
+  if(mvwinch(game_win, yLoc, xLoc + 1) == ' '){
+    mvwaddch(game_win, yLoc, xLoc, ' ');
+    xLoc++;
+    return true;
+  }
+  return false;
+}
+
+void Enemy::mvrandom() {
+    auto now = std::chrono::system_clock::now();
+    chrono::duration<double> elapsed = now - last_move;
+
+    if (elapsed.count() > ENEMY_MOVE_COOLDOWN){
+      int direction = std::rand() % 5; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
+      switch (direction) {
+          case 0:
+              if (!mvup()){
+                mvrandom();
+              }
+              break;
+          case 1:
+              if (!mvdown()){
+                mvrandom();
+              };
+              break;
+          case 2:
+              if (!mvleft()){
+                mvrandom();
+              };
+              break;
+          case 3:
+              if (!mvright()){
+                mvrandom();
+              };
+              break;
+          case 4:
+              if (!bomb->cast(yLoc, xLoc)){
+                mvrandom();
+              };
+              break;
+      }
+      last_move = std::chrono::system_clock::now();
+    }
+}
+
+void Enemy::display() {
+  bomb->display(game_win);
+  if((mvwinch(game_win, yLoc, xLoc) & A_CHARTEXT) == '$'){
+    die();
+  }
+  else{
+    mvrandom();
+    mvwaddch(game_win, yLoc, xLoc, character);
+  }
+}
 
 /*Enemy::Enemy(WINDOW * win, int yMax, int xMax, char c) : yMax(yMax), xMax(xMax) {
     srand(time(0));  //random number generator

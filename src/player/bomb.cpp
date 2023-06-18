@@ -11,16 +11,19 @@ Bomb::Bomb(int range, int cooldown){
     active = false;
 }
 
-void Bomb::cast(int yLoc, int xLoc){
+bool Bomb::cast(int yLoc, int xLoc){
     auto now = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed = now - last_cast;
+    chrono::duration<double> elapsed = now - last_cast;
 
     if (elapsed.count() > cooldown){
         Cast_yPos = yLoc;
         Cast_xPos = xLoc;
         last_cast = std::chrono::system_clock::now();
         active = true;
+        return true;
     }
+
+    return false;
 }
 
 void Bomb::renderCast(WINDOW * curwin){

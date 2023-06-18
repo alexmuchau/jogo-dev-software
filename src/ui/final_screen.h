@@ -1,6 +1,6 @@
-#include "lib.h"
+#include "../lib.h"
 #include "utilities.h"
-#include "player.h"
+#include "../player/player.h"
 
 class FinalScreen {
   private:

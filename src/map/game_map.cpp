@@ -66,7 +66,7 @@ void GameMap::construct_walls(const int& opt){
   // watrroff = desligar cores para chars
   wattroff(game_win, COLOR_PAIR(C_WALL));
   
-  construct_dest_walls();
+  //construct_dest_walls();
 
 }
 
