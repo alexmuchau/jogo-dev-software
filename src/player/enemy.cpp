@@ -1,42 +1,42 @@
-#include "enemy.h"
-#include <cstdlib>
-#include <iostream>
-#include <ncurses.h>
-#include "lib.h"
-#include "bomb.h"
-#include <ctime>
+// #include "enemy.h"
+// #include <cstdlib>
+// #include <iostream>
+// #include <ncurses.h>
+// #include "lib.h"
+// #include "bomb.h"
+// #include <ctime>
 
-Enemy::Enemy(WINDOW * win, int y, int x, char c){
-  game_win = win;
-  yLoc = y;
-  xLoc = x;
-  character = c;
-}   
+// Enemy::Enemy(WINDOW * win, int y, int x, char c){
+//   game_win = win;
+//   yLoc = y;
+//   xLoc = x;
+//   character = c;
+// }   
 
-void Enemy::mvrandom(game_win, int max_x, int max_y) {
-    int direction = std::rand() % 4; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
-    switch (direction) {
-        case 0:
-            max_y--;
-            break;
-        case 1:
-            max_y++;
-            break;
-        case 2:
-            max_x--;
-            break;
-        case 3:
-            max_x++;
-            break;
-    }
+// void Enemy::mvrandom(game_win, int max_x, int max_y) {
+//     int direction = std::rand() % 4; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
+//     switch (direction) {
+//         case 0:
+//             max_y--;
+//             break;
+//         case 1:
+//             max_y++;
+//             break;
+//         case 2:
+//             max_x--;
+//             break;
+//         case 3:
+//             max_x++;
+//             break;
+//     }
 
-    max_x = std::max(0, std::min(max_x, max_x - 1));                //Limitar as coordenadas dentro dos limites da tela
-    max_y = std::max(0, std::min(max_y, max_y - 1));
-}
+//     max_x = std::max(0, std::min(max_x, max_x - 1));                //Limitar as coordenadas dentro dos limites da tela
+//     max_y = std::max(0, std::min(max_y, max_y - 1));
+// }
 
-void Enemy::display() {
-    mvwaddch(game_win, yLoc, xLoc, character);
-}
+// void Enemy::display() {
+//     mvwaddch(game_win, yLoc, xLoc, character);
+// }
 
 /*Enemy::Enemy(WINDOW * win, int yMax, int xMax, char c) : yMax(yMax), xMax(xMax) {
     srand(time(0));  //random number generator

@@ -39,4 +39,3 @@ bool Utilities::screen_verification() {
 
   return true;
 }
-
