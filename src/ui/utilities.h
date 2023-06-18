@@ -1,6 +1,7 @@
 #ifndef UTILITIES
 #define UTILITIES
 #include "lib.h"
+#include "enemy.h"
 
 class Utilities {
     private:
@@ -14,6 +15,7 @@ class Utilities {
       int screen_lines;
       void getcenter_objw(WINDOW * screen, const double& obj_height, const double& obj_width, double * cast_start_y, double * cast_start_x);
       bool screen_verification();
+      chrono::time_point<std::chrono::system_clock> spawn_enemy(WINDOW * curwin, vector<Enemy*>& enemies, int yPos, int xPos);
       Utilities();
       // ~Utilities();
 };

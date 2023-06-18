@@ -69,9 +69,12 @@ int main()
     wrefresh(game_map.get_win());
 
     Player p(game_map.get_win(), 1, 1, '@', bomber_name);
+
+    EnemySpawner enemies(game_map.get_win());
+
     do {
         p->display();
-        // enemy->display();
+        enemy->display();
         wrefresh(game_map.get_win());
     } while((p.getmv() != 'x') & (p.alive));
 
@@ -79,47 +82,7 @@ int main()
 
     // p.overview();
 
-    // Enemy *enemy = new Enemy(xMax / 2, yMax / 2);
-
-    // nodelay(stdscr, TRUE);
-    // timeout(200);                   //Velocidade que meu inimigo está se movendo
-
-    // while (true) {
-    //     clear();
-
-    //     enemy->moverAleatoriamente(xMax, yMax);          
-    //     enemy->desenhar();
-
-    //     refresh();
-
-    //     int ch = getch();
-    //     if (ch == 'q') {            //AQUI SE ELE MORRER COM A BOMBA FAZEMOS UM DESTRUTOR DO BONECO
-    //         break;
-    //     }
-
-    //     if (ch != ERR) {
-    //         enemy->display();
-    //     }
-    //     napms(100);
-
-    // } while(p->getmv() != 'x');
-
-
-    // nodelay(stdscr, TRUE);
-    // timeout(200);           //Velocidade que meu inimigo está se movendo
-    // clearok(game_map.get_win(), true);
-    // wrefresh(game_map.get_win());
-    // werase(game_map.get_win());
-    // wrefresh(stdscr);
-    refresh();
-
-    FinalScreen final_screen(tools, *p);
-    wrefresh(final_screen.get_win());
-    do {
-    } while(p->getmv() != 'x');
-
     endwin();
-
 
     std::cout << "\nO jogo acabou\n";
 
