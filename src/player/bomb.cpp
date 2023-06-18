@@ -1,5 +1,5 @@
 #include "bomb.h"
-#include "game_map.h"
+#include "../map/game_map.h"
 
 // chars
 #define DEST_WALL ACS_DIAMOND

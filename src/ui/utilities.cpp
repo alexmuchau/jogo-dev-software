@@ -41,9 +41,3 @@ bool Utilities::screen_verification() {
 
   return true;
 }
-
-chrono::time_point<std::chrono::system_clock> Utilities::spawn_enemy(WINDOW * curwin, vector<Enemy*>& enemies, int yPos, int xPos){
-  Enemy * enemy = new Enemy(curwin, yPos, xPos, ENEMY_CHAR, enemies);
-  enemies.push_back(enemy);
-  return std::chrono::system_clock::now();
-}

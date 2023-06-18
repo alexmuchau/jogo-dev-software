@@ -16,7 +16,7 @@ class EnemySpawner {
     public:
         EnemySpawner(WINDOW * win);
         ~EnemySpawner();
-        void try_spawn();
+        void try_spawn(const vector<vector<int>>& av_pos);
         void murder(Enemy* target);
         void display();
 };

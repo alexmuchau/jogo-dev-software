@@ -19,12 +19,14 @@ void EnemySpawner::spawn(int yPos, int xPos){
   last_enemy_spawn = std::chrono::system_clock::now();
 }
 
-void EnemySpawner::try_spawn(){
+void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos){
     auto now = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = now - last_enemy_spawn;
 
     if(elapsed.count() > enemy_spawn_cooldown && enemies.size() < ENEMIES_LIMIT){
-        spawn(10, 10);
+        int y = (int)(rand() % av_pos.size());
+        int x = (int)(rand() % av_pos.at(y).size());
+        spawn(y, x);
         if (enemy_spawn_cooldown >= ENEMY_SPAWN_COOLDOWN){
             enemy_spawn_cooldown--;
         }
@@ -32,7 +34,7 @@ void EnemySpawner::try_spawn(){
 }
 
 void EnemySpawner::murder(Enemy* target){
-    enemies.erase(target->index);
+    enemies.erase(enemies.begin() + target->index);
     delete target;
 }
 

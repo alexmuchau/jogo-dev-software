@@ -75,15 +75,17 @@ int main()
     do {
         p.display();
 
-        enemies.try_spawn();
+        enemies.try_spawn(game_map.get_available_pos());
         enemies.display();
 
         wrefresh(game_map.get_win());
     } while((p.getmv() != 'x') & (p.alive));
 
-    // delete [] &game_map;
-
-    // p.overview();
+    FinalScreen final_screen(tools, p);
+    refresh();
+    wrefresh(final_screen.get_win());
+    do {
+    } while((p.getmv() != 'x'));
 
     endwin();
 
