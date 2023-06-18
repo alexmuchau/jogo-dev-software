@@ -24,9 +24,14 @@ void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos){
     std::chrono::duration<double> elapsed = now - last_enemy_spawn;
 
     if(elapsed.count() > enemy_spawn_cooldown && enemies.size() < ENEMIES_LIMIT){
-        int y = (int)(rand() % av_pos.size());
-        int x = (int)(rand() % av_pos.at(y).size());
+        int y, x;
+        do {
+            y = (int)(rand() % av_pos.size());
+            x = (int) 1 + (rand() % av_pos[y].size());
+            // cout << x << endl;
+        } while (mvwinch(game_win, y, x) != ' ');
         spawn(y, x);
+        
         if (enemy_spawn_cooldown >= ENEMY_SPAWN_COOLDOWN){
             enemy_spawn_cooldown--;
         }

@@ -60,7 +60,7 @@ void Enemy::mvrandom() {
     chrono::duration<double> elapsed = now - last_move;
 
     if (elapsed.count() > ENEMY_MOVE_COOLDOWN){
-      int direction = std::rand() % 5; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
+      int direction = std::rand() % 6; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
       switch (direction) {
           case 0:
               if (!mvup()){
@@ -86,6 +86,8 @@ void Enemy::mvrandom() {
               if (!bomb->cast(yLoc, xLoc)){
                 mvrandom();
               };
+              break;
+          default:
               break;
       }
       last_move = std::chrono::system_clock::now();

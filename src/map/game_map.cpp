@@ -126,7 +126,7 @@ void GameMap::construct_dest_walls(){
     available_pos.clear();
   }
 
-  for (y = 3; y < win_height; y++)
+  for (y = 3; y < win_height - 1; y++)
   {
     vector<int> available_pos;
     for (x = 1; x < win_width - 1; x++)
