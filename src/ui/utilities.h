@@ -1,4 +1,5 @@
 #ifndef UTILITIES
+#define UTILITIES
 #include "lib.h"
 
 class Utilities {

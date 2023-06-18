@@ -4,6 +4,7 @@
 #include "game_map.h"
 #include "utilities.h"
 #include "status_bar.h"
+#include "final_screen.h"
 
 #define C_DETAIL 3
 
@@ -74,7 +75,7 @@ int main()
     Player * p = new Player(game_map.get_win(), 1, 1, '@', bomber_name);
     do {
         p->display();
-        enemy->display();
+        // enemy->display();
         wrefresh(game_map.get_win());
     } while((p->getmv() != 'x') & (p->alive));
 
@@ -82,34 +83,44 @@ int main()
 
     // p.overview();
 
-    Enemy *enemy = new Enemy(xMax / 2, yMax / 2);
+    // Enemy *enemy = new Enemy(xMax / 2, yMax / 2);
 
-    nodelay(stdscr, TRUE);
-    timeout(200);                   //Velocidade que meu inimigo está se movendo
+    // nodelay(stdscr, TRUE);
+    // timeout(200);                   //Velocidade que meu inimigo está se movendo
 
-    while (true) {
-        clear();
+    // while (true) {
+    //     clear();
 
-        enemy->moverAleatoriamente(xMax, yMax);          
-        enemy->desenhar();
+    //     enemy->moverAleatoriamente(xMax, yMax);          
+    //     enemy->desenhar();
 
-        refresh();
+    //     refresh();
 
-        int ch = getch();
-        if (ch == 'q') {            //AQUI SE ELE MORRER COM A BOMBA FAZEMOS UM DESTRUTOR DO BONECO
-            break;
-        }
+    //     int ch = getch();
+    //     if (ch == 'q') {            //AQUI SE ELE MORRER COM A BOMBA FAZEMOS UM DESTRUTOR DO BONECO
+    //         break;
+    //     }
 
-        if (ch != ERR) {
-            enemy->display();
-        }
-        napms(100);
+    //     if (ch != ERR) {
+    //         enemy->display();
+    //     }
+    //     napms(100);
 
+    // } while(p->getmv() != 'x');
+
+
+    // nodelay(stdscr, TRUE);
+    // timeout(200);           //Velocidade que meu inimigo está se movendo
+    // clearok(game_map.get_win(), true);
+    // wrefresh(game_map.get_win());
+    // werase(game_map.get_win());
+    // wrefresh(stdscr);
+    refresh();
+
+    FinalScreen final_screen(tools, *p);
+    wrefresh(final_screen.get_win());
+    do {
     } while(p->getmv() != 'x');
-
-
-    nodelay(stdscr, TRUE);
-    timeout(200);                   //Velocidade que meu inimigo está se movendo
 
     endwin();
 
