@@ -1,10 +1,10 @@
 #include "lib.h"
-#include "player.h"
-#include "enemy.h"
-#include "game_map.h"
-#include "utilities.h"
-#include "status_bar.h"
-#include "final_screen.h"
+#include "./player/player.h"
+#include "./player/enemy.h"
+#include "./map/game_map.h"
+#include "./ui/utilities.h"
+#include "./ui/status_bar.h"
+#include "./ui/final_screen.h"
 
 #define C_DETAIL 3
 
@@ -73,8 +73,11 @@ int main()
     EnemySpawner enemies(game_map.get_win());
 
     do {
-        p->display();
-        enemy->display();
+        p.display();
+
+        enemies.try_spawn();
+        enemies.display();
+
         wrefresh(game_map.get_win());
     } while((p.getmv() != 'x') & (p.alive));
 

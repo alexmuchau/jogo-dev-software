@@ -2,7 +2,7 @@
 #ifndef H_BOMB
 #define H_BOMB
 
-#include "lib.h"
+#include "../lib.h"
 
 class Bomb {
     int range;

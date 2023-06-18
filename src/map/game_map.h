@@ -1,6 +1,6 @@
 #ifndef game_map
 
-#include "lib.h"
+#include "../lib.h"
 
 class GameMap {
   private:

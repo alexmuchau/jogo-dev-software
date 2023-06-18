@@ -1,7 +1,7 @@
 #ifndef UTILITIES
 #define UTILITIES
-#include "lib.h"
-#include "enemy.h"
+#include "../lib.h"
+#include "../player/enemy.h"
 
 class Utilities {
     private:

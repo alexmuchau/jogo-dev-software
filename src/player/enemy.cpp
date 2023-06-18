@@ -1,5 +1,5 @@
 #include "enemy.h"
-#include "lib.h"
+#include "../lib.h"
 
 #define ENEMY_MOVE_COOLDOWN 0.5
 

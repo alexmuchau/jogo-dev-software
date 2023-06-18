@@ -1,7 +1,7 @@
 #ifndef H_PLAYER
 #define H_PLAYER
 
-#include "lib.h"
+#include "../lib.h"
 
 class Bomb;
 

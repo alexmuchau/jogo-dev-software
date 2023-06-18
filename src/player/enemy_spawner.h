@@ -1,7 +1,7 @@
 #ifndef H_ENEMY_SPAWNER
 #define H_ENEMY_SPAWNER
 
-#include <ncurses.h>
+#include "../lib.h"
 #include "bomb.h"
 #include "enemy.h"
 

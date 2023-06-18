@@ -1,5 +1,5 @@
 #include "enemy.h"
-#include "lib.h"
+#include "../lib.h"
 #include "enemy_spawner.h"
 
 #define ENEMIES_LIMIT 8
