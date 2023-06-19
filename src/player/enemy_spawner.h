@@ -4,6 +4,7 @@
 #include "../lib.h"
 #include "bomb.h"
 #include "enemy.h"
+#include "../ui/status_bar.h"
 
 class Enemy;
 
@@ -16,7 +17,7 @@ class EnemySpawner {
     public:
         EnemySpawner(WINDOW * win);
         ~EnemySpawner();
-        void try_spawn(const vector<vector<int>>& av_pos);
+        void try_spawn(const vector<vector<int>>& av_pos, StatusBar * status);
         void murder(Enemy* target);
         void display();
 };

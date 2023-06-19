@@ -8,6 +8,7 @@ class Bomb;
 class Player {
   public:
     Player(WINDOW * win, const int& y, const int& x, const char& c, string name);
+    chrono::time_point<std::chrono::system_clock> init_time;
     ~Player();
     void mvup();
     void mvdown();

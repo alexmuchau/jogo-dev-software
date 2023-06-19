@@ -126,7 +126,7 @@ void GameMap::construct_dest_walls(){
     available_pos.clear();
   }
 
-  for (y = 3; y < win_height - 1; y++)
+  for (y = 3; y < win_height - 2; y++)
   {
     vector<int> available_pos;
     for (x = 1; x < win_width - 1; x++)
@@ -150,7 +150,6 @@ void GameMap::construct_dest_walls(){
       count++;
     }
 
-    av_positions.push_back(available_pos);
   }
   
   wattroff(game_win, COLOR_PAIR(C_DEST_WALL));
@@ -161,6 +160,13 @@ WINDOW * GameMap::get_win(){
 }
 
 vector<vector<int>> GameMap::get_available_pos(){
+  vector<int> spawner1 = {win_height - 2, 4};
+  vector<int> spawner2 = {win_height - 2, win_width - 5};
+  vector<int> spawner3 = {win_height/2, win_width - 2};
+  
+  av_positions.push_back(spawner1);
+  av_positions.push_back(spawner2);
+  av_positions.push_back(spawner3);
   return av_positions;
 }
 
