@@ -71,12 +71,23 @@ int main()
     Player p(game_map.get_win(), 1, 1, '@', bomber_name);
 
     EnemySpawner enemies(game_map.get_win());
+    
+    typedef std::chrono::system_clock Time;
+    typedef std::chrono::duration<float> fsec;
+    auto t0 = Time::now();
 
     do {
+        
         p.display();
+        // auto elapsed_time = std::chrono::system_clock::now() - p.init_time;
 
-        enemies.try_spawn(game_map.get_available_pos());
+        enemies.try_spawn(game_map.get_available_pos(), &status_bar);
         enemies.display();
+
+        auto t1 = Time::now();
+        fsec fs = t1 - t0;
+        auto fseconds = chrono::duration_cast<chrono::seconds>(fs);
+        status_bar.update_time(to_string(fseconds.count()));
 
         wrefresh(game_map.get_win());
     } while((p.getmv() != 'x') & (p.alive));

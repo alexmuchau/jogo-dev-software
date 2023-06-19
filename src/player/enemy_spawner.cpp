@@ -19,18 +19,20 @@ void EnemySpawner::spawn(int yPos, int xPos){
   last_enemy_spawn = std::chrono::system_clock::now();
 }
 
-void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos){
+void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos, StatusBar * status){
     auto now = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = now - last_enemy_spawn;
 
     if(elapsed.count() > enemy_spawn_cooldown && enemies.size() < ENEMIES_LIMIT){
-        int y, x;
-        do {
-            y = (int)(rand() % av_pos.size());
-            x = (int) 1 + (rand() % av_pos[y].size());
-            // cout << x << endl;
-        } while (mvwinch(game_win, y, x) != ' ');
+        int spawner, y, x;
+        
+        spawner = (int)(rand() % av_pos.size());
+        y = av_pos[spawner][0];
+        x = av_pos[spawner][1];
+
         spawn(y, x);
+
+        status->update_enemies(true);
         
         if (enemy_spawn_cooldown >= ENEMY_SPAWN_COOLDOWN){
             enemy_spawn_cooldown--;

@@ -2,6 +2,7 @@
 #include "bomb.h"
 
 Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string bomber_name){
+  init_time = std::chrono::system_clock::now();
   game_win = win;
   yLoc = y;
   xLoc = x;
