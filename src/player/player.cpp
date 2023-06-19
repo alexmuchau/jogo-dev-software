@@ -8,7 +8,7 @@ Player::Player(WINDOW * win, const int& y, const int& x, const char& c, string b
   xLoc = x;
   character = c;
   name = bomber_name;
-  bomb = new Bomb(3, 5);
+  bomb = new Bomb(3, 5, win);
   alive = true;
 }
 
@@ -74,7 +74,7 @@ int Player::getmv() {
 }
 
 void Player::display(){
-  bomb->display(game_win);
+  bomb->display();
   if((mvwinch(game_win, yLoc, xLoc) & A_CHARTEXT) == '$'){
     die();
   }

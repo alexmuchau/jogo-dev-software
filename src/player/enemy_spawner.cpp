@@ -42,6 +42,9 @@ void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos, StatusBar * stat
 
 void EnemySpawner::murder(Enemy* target){
     enemies.erase(enemies.begin() + target->index);
+    for(int i=target->index; i<enemies.size(); i++){
+        enemies[i]->index--;
+    }
     delete target;
 }
 
