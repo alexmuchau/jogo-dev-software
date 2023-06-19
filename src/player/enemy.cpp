@@ -8,7 +8,7 @@ Enemy::Enemy(WINDOW * win, int y, int x, char c, int i, EnemySpawner* spawner){
   yLoc = y;
   xLoc = x;
   character = c;
-  bomb = new Bomb(2, 10);
+  bomb = new Bomb(2, 10, win);
   index = i;
   this->spawner = spawner;
 }
@@ -16,6 +16,7 @@ Enemy::Enemy(WINDOW * win, int y, int x, char c, int i, EnemySpawner* spawner){
 Enemy::~Enemy() {};
 
 void Enemy::die(){
+  delete bomb;
   spawner->murder(this);
 }
 
@@ -95,7 +96,7 @@ void Enemy::mvrandom() {
 }
 
 void Enemy::display() {
-  bomb->display(game_win);
+  bomb->display();
   if((mvwinch(game_win, yLoc, xLoc) & A_CHARTEXT) == '$'){
     die();
   }

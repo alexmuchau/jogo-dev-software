@@ -4,12 +4,27 @@
 // chars
 #define DEST_WALL ACS_DIAMOND
 #define BOMB_COLOR 7
+#define ENEMY_CHAR 'B'
 
-Bomb::Bomb(int range, int cooldown){
+Bomb::Bomb(int range, int cooldown, WINDOW * win){
     this->range = range;
     this->cooldown = (float) cooldown;
+    game_win = win;
     active = false;
 }
+
+Bomb::~Bomb() {
+    mvwaddch(game_win, Cast_yPos, Cast_xPos, ' ');
+    for(int i=(-range); i<5; i++){
+        if((mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
+            mvwaddch(game_win, Cast_yPos + i, Cast_xPos, ' '); // vertical line
+        }
+        if((mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
+            mvwaddch(game_win, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
+        }
+    }
+    active = false;
+};
 
 bool Bomb::cast(int yLoc, int xLoc){
     auto now = std::chrono::system_clock::now();
@@ -26,71 +41,79 @@ bool Bomb::cast(int yLoc, int xLoc){
     return false;
 }
 
-void Bomb::renderCast(WINDOW * curwin){
+void Bomb::renderCast(){
     init_pair(BOMB_COLOR, COLOR_WHITE, COLOR_YELLOW);
-    wattron(curwin, COLOR_PAIR(BOMB_COLOR));
+    wattron(game_win, COLOR_PAIR(BOMB_COLOR));
 
     for(int i=1; i<=range; i++){
-        if(mvwinch(curwin, Cast_yPos + i, Cast_xPos) == ' ' ||
-           (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
-           (mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
-            mvwaddch(curwin, Cast_yPos + i, Cast_xPos, '$'); // vertical line
+        if(mvwinch(game_win, Cast_yPos + i, Cast_xPos) == ' ' ||
+           (mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$' ||
+           (mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == ENEMY_CHAR ||
+           (mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '@'){
+            mvwaddch(game_win, Cast_yPos + i, Cast_xPos, '$'); // vertical line
         }
-        else if (mvwinch(curwin, Cast_yPos + i, Cast_xPos) != '@') break;
+        else break;
     }
     for(int i=1; i<=range; i++){
-        if(mvwinch(curwin, Cast_yPos - i, Cast_xPos) == ' ' ||
-           (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
-            (mvwinch(curwin, Cast_yPos - i, Cast_xPos) & A_CHARTEXT) == '$'){
-            mvwaddch(curwin, Cast_yPos - i, Cast_xPos, '$'); // vertical line
+        if(mvwinch(game_win, Cast_yPos - i, Cast_xPos) == ' ' ||
+           (mvwinch(game_win, Cast_yPos - i, Cast_xPos) & A_COLOR) == COLOR_PAIR(2) ||
+            (mvwinch(game_win, Cast_yPos - i, Cast_xPos) & A_CHARTEXT) == '$' ||
+           (mvwinch(game_win, Cast_yPos - i, Cast_xPos) & A_CHARTEXT) == ENEMY_CHAR ||
+           (mvwinch(game_win, Cast_yPos - i, Cast_xPos) & A_CHARTEXT) == '@'){
+            mvwaddch(game_win, Cast_yPos - i, Cast_xPos, '$'); // vertical line
         }
-        else if (mvwinch(curwin, Cast_yPos - i, Cast_xPos) != '@') break;
+        else break;
     }
     for(int i=1; i<=range; i++){
-        if(mvwinch(curwin, Cast_yPos, Cast_xPos + i) == ' ' ||
-           (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_COLOR) == COLOR_PAIR(2) ||
-           (mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
-            mvwaddch(curwin, Cast_yPos, Cast_xPos + i, '$'); // horizontal line
+        if(mvwinch(game_win, Cast_yPos, Cast_xPos + i) == ' ' ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$' ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == ENEMY_CHAR ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '@'){
+            mvwaddch(game_win, Cast_yPos, Cast_xPos + i, '$'); // horizontal line
         }
-        else if (mvwinch(curwin, Cast_yPos, Cast_xPos + i) != '@') break;
+        else break;
     }
     for(int i=1; i<=range; i++){
-        if(mvwinch(curwin, Cast_yPos, Cast_xPos - i) == ' ' ||
-           (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_COLOR) == COLOR_PAIR(2) ||
-           (mvwinch(curwin, Cast_yPos, Cast_xPos - i) & A_CHARTEXT) == '$'){
-            mvwaddch(curwin, Cast_yPos, Cast_xPos - i, '$'); // horizontal line
+        if(mvwinch(game_win, Cast_yPos, Cast_xPos - i) == ' ' ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos - i) & A_COLOR) == COLOR_PAIR(2) ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos - i) & A_CHARTEXT) == '$' ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos - i) & A_CHARTEXT) == ENEMY_CHAR ||
+           (mvwinch(game_win, Cast_yPos, Cast_xPos - i) & A_CHARTEXT) == '@'){
+            mvwaddch(game_win, Cast_yPos, Cast_xPos - i, '$'); // horizontal line
         }
-        else if (mvwinch(curwin, Cast_yPos, Cast_xPos - i) != '@') break;
+        else break;
     }
 
-    wattroff(curwin, COLOR_PAIR(BOMB_COLOR));
+    wattroff(game_win, COLOR_PAIR(BOMB_COLOR));
 }
 
-void Bomb::display(WINDOW * curwin){
+void Bomb::display(){
     if (active){
         auto now = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed = now - last_cast;
 
-        if(elapsed.count() > 2){
-            renderCast(curwin);
+        if(elapsed.count() > 3){
+            renderCast();
         }
         else{
-            mvwaddch(curwin, Cast_yPos, Cast_xPos, 'o');
+            mvwaddch(game_win, Cast_yPos, Cast_xPos, 'o');
         }
 
         //std::cout << elapsed.count();
         if (elapsed.count() > 4){
-            mvwaddch(curwin, Cast_yPos, Cast_xPos, ' ');
+            mvwaddch(game_win, Cast_yPos, Cast_xPos, ' ');
             for(int i=(-range); i<5; i++){
-                if((mvwinch(curwin, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
-                    mvwaddch(curwin, Cast_yPos + i, Cast_xPos, ' '); // vertical line
+                if((mvwinch(game_win, Cast_yPos + i, Cast_xPos) & A_CHARTEXT) == '$'){
+                    mvwaddch(game_win, Cast_yPos + i, Cast_xPos, ' '); // vertical line
                 }
-                if((mvwinch(curwin, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
-                    mvwaddch(curwin, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
+                if((mvwinch(game_win, Cast_yPos, Cast_xPos + i) & A_CHARTEXT) == '$'){
+                    mvwaddch(game_win, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
                 }
             }
-            // mvwvline(curwin, vCast_yPos, vCast_xPos, ' ', (range*2)+1); // vertical line
-            // mvwhline(curwin, hCast_yPos, hCast_xPos, ' ', (range*2)+1); // horizontal line
+            // mvwvline(game_win, vCast_yPos, vCast_xPos, ' ', (range*2)+1); // vertical line
+            // mvwhline(game_win, hCast_yPos, hCast_xPos, ' ', (range*2)+1); // horizontal line
             active = false;
         }
     }
