@@ -7,6 +7,7 @@
 
 class Enemy {
     int xLoc, yLoc, xMax, yMax;
+    int count;
     char character;
     WINDOW * game_win;
     Bomb * bomb;

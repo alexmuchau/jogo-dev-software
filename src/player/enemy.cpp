@@ -12,6 +12,7 @@ Enemy::Enemy(WINDOW * win, int y, int x, char c, int i, EnemySpawner* spawner){
   bomb = new Bomb(2, 10, win);
   index = i;
   this->spawner = spawner;
+  count = 0;
 
   init_pair(C_ENEMY, COLOR_RED, COLOR_BLACK);
 }
@@ -64,7 +65,11 @@ void Enemy::mvrandom() {
     chrono::duration<double> elapsed = now - last_move;
 
     if (elapsed.count() > ENEMY_MOVE_COOLDOWN){
-      int direction = std::rand() % 6; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
+      int direction = std::rand() % 5; // 0 - cima, 1 - baixo, 2 - esquerda, 3 - direita
+      count++;
+      if(count > 15) {
+        direction = 6;
+      }
       switch (direction) {
           case 0:
               if (!mvup()){
@@ -92,6 +97,7 @@ void Enemy::mvrandom() {
               };
               break;
           default:
+              count = 0;
               break;
       }
       last_move = std::chrono::system_clock::now();

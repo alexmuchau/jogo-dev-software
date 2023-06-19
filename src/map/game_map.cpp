@@ -38,7 +38,8 @@ void GameMap::construct_walls(const int& opt){
 
       // hlinhas extremos
       addhline_wall(2, 5, win_width - 9);
-      addhline_wall(win_height - 3, 4, win_width - 9);
+      addhline_wall(win_height - 3, 5, 9);
+      addhline_wall(win_height - 3, 16, 9);
 
       // bloco meio
       addpers_wall(3, 6, (win_height/2) - 1, (win_width/2) - 3);
