@@ -1,75 +1,106 @@
-#include <cstdlib>
-#include <iostream>
-#include <unistd.h>
-#include <ncurses.h>
 #include "lib.h"
-#include "player.h"
+#include "./player/player.h"
+#include "./player/enemy.h"
+#include "./map/game_map.h"
+#include "./ui/utilities.h"
+#include "./ui/status_bar.h"
+#include "./ui/final_screen.h"
 
-#include <ctime>
-#include <string>
+#define C_DETAIL 3
 
-
-int pos[2] = {10, -10};
-int axis[2] = {0, 0};
-
-void getAxis(int (&axis)[2], int const &input){
-    axis[0] = 0;
-    axis[1] = 0;
-    if (input != ERR){
-        axis[0] = (input == 'd') - (input == 'a');
-        axis[1] = (input == 'w') - (input == 's');
-    }
-}
-
-void update(){
-    int input = getch();
-    getAxis(axis, input);
-    
-    pos[0] += axis[0] * 600 / COLS;
-    pos[1] += axis[1] * 100 / LINES;
-
-    erase();
-    printw("pos: (%d, %d) axis: (%d, %d)", pos[0], pos[1], axis[0], axis[1]);
-    mvprintw(-pos[1], pos[0], "88");
-    mvprintw(-pos[1] - 1, pos[0], "88");
-    mvprintw(-pos[1] - 2, pos[0], "88");
-    refresh();
-}
-
-int main(int argc, char const *argv[])
+int main()
 {
-    // initscr();
-    // nodelay(stdscr, true);
-    // timeout(0);
+    Utilities tools = Utilities();
 
-    // do{
-    //     update();
-    //     napms(20);
-    // } while (getch() != 'q');
-    
-    // endwin();
+    if(tools.screen_verification() == false) {
+        exit(0);
+    }
 
-    // return 0;
-
+    // inicializando ncurses
     initscr();
+    start_color();
+    use_default_colors();
+
+    double start_x = 0, start_y = 0;
+    string bomber_name_label = " DIGITE UM NOME PARA SEU BOMBER ";
+    char * bomber_name = new char[bomber_name_label.length()];
+    tools.getcenter_objw(stdscr, 4, bomber_name_label.length() + 2, &start_y, &start_x);
+
+    WINDOW * inputwindow = newwin(4, bomber_name_label.length() + 2, start_y, start_x);
+    box(inputwindow, 0, 0);
+    
+    mvwaddstr(inputwindow, 1, 1, bomber_name_label.c_str());
+    mvwgetstr(inputwindow, 2, 2, bomber_name);
+    refresh();
+    wrefresh(inputwindow);
+    if(!bomber_name) {
+        cout << "Digite um nome valido!" << endl;
+        endwin();
+        return 0;
+    }
     noecho();
     cbreak();
+    curs_set(0);
 
-    int yMax, xMax;
-    getmaxyx(stdscr, yMax, xMax);
+    // inicializando mapa
+    tools.getcenter_objw(stdscr, 15, 15*2, &start_y, &start_x);
+    GameMap game_map(15, 1, start_y, start_x);
 
-    WINDOW * playwin = newwin(20, 50, (yMax/2) - 10, 10);
-    box(playwin, 0, 0);
+    // criando ui
+    /// borda em stdscr
+    init_pair(C_DETAIL, COLOR_CYAN, COLOR_BLACK);
+    attron(COLOR_PAIR(C_DETAIL));
+    box(stdscr, 0, 0);
+    string title;
+    title.append(" Bomberman Terminal  -  MAP ");
+    title.append("1 ");
+    mvaddstr(0, 4, title.c_str());
+    attroff(COLOR_PAIR(C_DETAIL));
+
+    /// status bar
+    tools.getcenter_objw(stdscr, 2, 32, &start_y, &start_x);
+    StatusBar status_bar(tools.screen_lines - 2, start_x, COLOR_PAIR(C_DETAIL));
+
+    //GameMap game_map(tools.min_screen_lines - 10, 1);
+    nodelay(game_map.get_win(), true);
+    timeout(0);
+
     refresh();
-    wrefresh(playwin);
+    wrefresh(game_map.get_win());
 
-    Player * p = new Player(playwin, 1, 1, '@');
+    Player p(game_map.get_win(), 1, 1, '@', bomber_name);
+
+    EnemySpawner enemies(game_map.get_win());
+    
+    typedef std::chrono::system_clock Time;
+    typedef std::chrono::duration<float> fsec;
+    auto t0 = Time::now();
+
     do {
-        p->display();
-        wrefresh(playwin);
-    } while(p->getmv() != 'x');
+        
+        p.display();
+        // auto elapsed_time = std::chrono::system_clock::now() - p.init_time;
+
+        enemies.try_spawn(game_map.get_available_pos(), &status_bar);
+        enemies.display();
+
+        auto t1 = Time::now();
+        fsec fs = t1 - t0;
+        auto fseconds = chrono::duration_cast<chrono::seconds>(fs);
+        status_bar.update_time(to_string(fseconds.count()));
+
+        wrefresh(game_map.get_win());
+    } while((p.getmv() != 'x') & (p.alive));
+
+    FinalScreen final_screen(tools, p);
+    refresh();
+    wrefresh(final_screen.get_win());
+    do {
+    } while((p.getmv() != 'x'));
 
     endwin();
+
+    std::cout << "\nO jogo acabou\n";
 
     return 0;
 }
