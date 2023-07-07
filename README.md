@@ -1,7 +1,7 @@
 
 # **Bomberman in Terminal - C++**
 
-Este projeto foi feito em colaboração de **Alberth, Alex e Gustavo**. Para a conclusão da matéria Desenvolvimento de Software na Universidade Positivo.
+Este projeto foi feito em colaboração de **Alberth Ronaldy, Alex Muchau, Gustavo Berwanger**. Para a conclusão da matéria Desenvolvimento de Software na Universidade Positivo.
 
 O projeto conta com um jogo parecido com o Bomberman original, com inimigos aparecendo em um tempo exponencial, com inteligência para soltar as bombas e andar pelo cenário. 
 
