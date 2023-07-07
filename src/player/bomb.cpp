@@ -112,7 +112,6 @@ void Bomb::display(){
                     mvwaddch(game_win, Cast_yPos, Cast_xPos + i, ' '); // horizontal line
                 }
             }
-            // mvwvline(game_win, vCast_yPos, vCast_xPos, ' ', (range*2)+1); // vertical line
             // mvwhline(game_win, hCast_yPos, hCast_xPos, ' ', (range*2)+1); // horizontal line
             active = false;
         }

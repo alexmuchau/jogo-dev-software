@@ -76,6 +76,7 @@ int main()
     typedef std::chrono::duration<float> fsec;
     auto t0 = Time::now();
 
+    string game_time_str;
     do {
         
         p.display();
@@ -88,11 +89,16 @@ int main()
         fsec fs = t1 - t0;
         auto fseconds = chrono::duration_cast<chrono::seconds>(fs);
         status_bar.update_time(to_string(fseconds.count()));
+        game_time_str = to_string(fseconds.count());
 
         wrefresh(game_map.get_win());
     } while((p.getmv() != 'x') & (p.alive));
 
-    FinalScreen final_screen(tools, p);
+    FinalScreen final_screen(tools,
+                             game_time_str,
+                             to_string(status_bar.enemies_count),
+                             p.name);
+
     refresh();
     wrefresh(final_screen.get_win());
     do {

@@ -7,6 +7,8 @@ StatusBar::StatusBar(const double& start_y, const double& start_x, const int& co
   enemies_count = 0;
   elapsed_time = 0;
 
+  status_win = newwin(win_height, win_width, y, x);
+
   attron(color);
   attron(A_STANDOUT);
   mvwhline(stdscr, y, x, ' ', win_width);
@@ -17,11 +19,12 @@ StatusBar::StatusBar(const double& start_y, const double& start_x, const int& co
   vector<string> labels;
   labels.push_back("Tempo");
   labels.push_back("Inimigos");
-  labels.push_back("Mapa");
-  labels.push_back("Pontos");
+  // labels.push_back("Mapa");
+  // labels.push_back("Pontos");
 
   construct_labels(labels);
   update_map();
+
   // update_time();
 }
 
@@ -31,7 +34,7 @@ void StatusBar::construct_labels(vector<string>& labels){
   int x_pos = x + 1;
   for(auto& label : labels) {
     mvaddstr(y, x_pos, label.c_str());
-    x_pos += label.length() + 2;
+    x_pos += label.length() + 8;
   }
   attroff(COLOR_PAIR(C_LABEL));
 }
@@ -54,8 +57,8 @@ void StatusBar::update_enemies(bool plus = true){
   attron(COLOR_PAIR(C_LABEL));
   // attron(A_STANDOUT);
   enemies_count++;
-  mvwhline(status_win, 1, 15, ' ', 7);
-  mvaddstr(y+1, x+8, to_string(enemies_count).c_str());
+  // mvwhline(status_win, 1, 15, ' ', 7);
+  mvaddstr(y+1, x+14, to_string(enemies_count).c_str());
   // attroff(A_STANDOUT);
   attroff(COLOR_PAIR(C_LABEL));
 
@@ -66,8 +69,8 @@ void StatusBar::update_enemies(bool plus = true){
 void StatusBar::update_map(){
   attron(COLOR_PAIR(C_LABEL));
 
-  mvwhline(status_win, 1, 15, ' ', 7);
-  mvaddstr(y+1, x+18, "1");
+  // mvwhline(status_win, 1, 15, ' ', 7);
+  // mvaddstr(y+1, x+18, "1");
 
   attroff(COLOR_PAIR(C_LABEL));
 

@@ -2,13 +2,13 @@
 #include "../lib.h"
 #include "enemy_spawner.h"
 
-#define ENEMIES_LIMIT 8
-#define ENEMY_SPAWN_COOLDOWN 5
+#define ENEMIES_LIMIT 10
+#define MIN_SPAWN_COOLDOWN 3
 #define ENEMY_CHAR 'B'
 
 EnemySpawner::EnemySpawner(WINDOW * win){
   game_win = win;
-  enemy_spawn_cooldown = 10;
+  enemy_spawn_cooldown = 8;
 }   
 
 EnemySpawner::~EnemySpawner() {};
@@ -34,7 +34,7 @@ void EnemySpawner::try_spawn(const vector<vector<int>>& av_pos, StatusBar * stat
 
         status->update_enemies(true);
         
-        if (enemy_spawn_cooldown >= ENEMY_SPAWN_COOLDOWN){
+        if (enemy_spawn_cooldown >= MIN_SPAWN_COOLDOWN){
             enemy_spawn_cooldown--;
         }
     }

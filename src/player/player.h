@@ -18,10 +18,10 @@ class Player {
     void display();
     bool alive;
     void die();
+    string name;
   private:
     int xLoc, yLoc, xMax, yMax;
     char character;
-    string name;
     Bomb * bomb;
     WINDOW * game_win;
 };

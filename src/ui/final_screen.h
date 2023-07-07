@@ -11,6 +11,6 @@ class FinalScreen {
     WINDOW * final_win;
     void construct_labels();
   public:
-    FinalScreen(Utilities& tools, Player& player);
+    FinalScreen(Utilities&, string, string, string);
     WINDOW * get_win();
 };

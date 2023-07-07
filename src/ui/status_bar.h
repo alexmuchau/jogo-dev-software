@@ -11,9 +11,9 @@ class StatusBar {
     int y;
     WINDOW * status_win;
     void construct_labels(vector<string>& labels);
-    int enemies_count;
     int elapsed_time;
   public:
+    int enemies_count;
     StatusBar(const double& start_y, const double& start_x, const int& color);
     void update_time(string duration);
     void update_enemies(bool plus);
